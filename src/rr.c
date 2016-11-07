@@ -150,59 +150,59 @@ static void move() {
 }
 
 static void draw() {
-  switch ( status ) {
-  case TITLE:
-    drawBackground();
-    drawBoss();
-    drawBulletsWake();
-    drawBullets();
-    startDrawBoards();
-    drawSideBoards();
-    drawTitle();
-    endDrawBoards();
-    break;
-  case IN_GAME:
-  case STAGE_CLEAR:
-    drawBackground();
-    drawBoss();
-    drawLasers();
-    drawShots();
-    drawBulletsWake();
-    drawFrags();
-    drawShip();
-    drawBullets();
-    startDrawBoards();
-    drawSideBoards();
-    drawBossState();
-    endDrawBoards();
-    break;
-  case GAMEOVER:
-    drawBackground();
-    drawBoss();
-    drawBulletsWake();
-    drawFrags();
-    drawBullets();
-    startDrawBoards();
-    drawSideBoards();
-    drawGameover();
-    endDrawBoards();
-    break;
-  case PAUSE:
-    drawBackground();
-    drawBoss();
-    drawLasers();
-    drawShots();
-    drawBulletsWake();
-    drawFrags();
-    drawShip();
-    drawBullets();
-    startDrawBoards();
-    drawSideBoards();
-    drawBossState();
-    drawPause();
-    endDrawBoards();
-    break;
-  }
+    switch (status) {
+    case TITLE:
+        drawBackground();
+        drawBoss();
+        drawBulletsWake();
+        drawBullets();
+        startDrawBoards();
+        drawSideBoards();
+        drawTitle();
+        endDrawBoards();
+        break;
+    case IN_GAME:
+    case STAGE_CLEAR:
+        drawBackground();
+        drawBoss();
+        drawLasers();
+        drawShots();
+        drawBulletsWake();
+        drawFrags();
+        drawShip();
+        drawBullets();
+        startDrawBoards();
+        drawSideBoards();
+        drawBossState();
+        endDrawBoards();
+        break;
+    case GAMEOVER:
+        drawBackground();
+        drawBoss();
+        drawBulletsWake();
+        drawFrags();
+        drawBullets();
+        startDrawBoards();
+        drawSideBoards();
+        drawGameover();
+        endDrawBoards();
+        break;
+    case PAUSE:
+        drawBackground();
+        drawBoss();
+        drawLasers();
+        drawShots();
+        drawBulletsWake();
+        drawFrags();
+        drawShip();
+        drawBullets();
+        startDrawBoards();
+        drawSideBoards();
+        drawBossState();
+        drawPause();
+        endDrawBoards();
+        break;
+    }
 }
 
 static void usage(char *argv0) {
@@ -291,21 +291,21 @@ int main(int argc, char *argv[])
         keys = SDL_GetKeyboardState(NULL);
         nowTick = SDL_GetTicks();
         frame = (int)(nowTick-prvTickCount) / interval;
-        if ( frame <= 0 ) {
+        if (frame <= 0) {
             frame = 1;
-            SDL_Delay(prvTickCount+interval-nowTick);
-            if ( accframe ) {
+            SDL_Delay(prvTickCount + interval - nowTick);
+            if (accframe) {
                 prvTickCount = SDL_GetTicks();
             } else {
                 prvTickCount += interval;
             }
-        } else if ( frame > 5 ) {
+        } else if (frame > 5) {
             frame = 5;
             prvTickCount = nowTick;
         } else {
             prvTickCount += frame*interval;
         }
-        for ( i=0 ; i<frame ; i++ ) {
+        for (i=0 ; i < frame; i++) {
             move();
             tick++;
         }
