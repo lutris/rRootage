@@ -60,7 +60,11 @@ void resized(int width, int height) {
 // Init OpenGL.
 void initGL(SDL_Window *window, SDL_GLContext *context) {
   context = SDL_GL_CreateContext(window);
-
+  if (context == NULL) {
+      fprintf(stderr, "Couldn't create OpenGL context! %s\n", SDL_GetError());
+      SDL_Quit();
+      exit(2);
+  }
   SDL_GL_SetSwapInterval(1);
 
   glViewport(0, 0, screenWidth, screenHeight);
@@ -227,7 +231,7 @@ void drawGLSceneEnd() {
 }
 
 void drawBox(GLfloat x, GLfloat y, GLfloat width, GLfloat height,
-	     int r, int g, int b) {
+         int r, int g, int b) {
   glPushMatrix();
   glTranslatef(x, y, 0);
   glColor4ub(r, g, b, 128);
@@ -248,7 +252,7 @@ void drawBox(GLfloat x, GLfloat y, GLfloat width, GLfloat height,
 }
 
 void drawLine(GLfloat x1, GLfloat y1, GLfloat z1,
-	      GLfloat x2, GLfloat y2, GLfloat z2, int r, int g, int b, int a) {
+          GLfloat x2, GLfloat y2, GLfloat z2, int r, int g, int b, int a) {
   glColor4ub(r, g, b, a);
   glBegin(GL_LINES);
   glVertex3f(x1, y1, z1);
@@ -257,7 +261,7 @@ void drawLine(GLfloat x1, GLfloat y1, GLfloat z1,
 }
 
 void drawLinePart(GLfloat x1, GLfloat y1, GLfloat z1,
-		  GLfloat x2, GLfloat y2, GLfloat z2, int r, int g, int b, int a, int len) {
+          GLfloat x2, GLfloat y2, GLfloat z2, int r, int g, int b, int a, int len) {
   glColor4ub(r, g, b, a);
   glBegin(GL_LINES);
   glVertex3f(x1, y1, z1);
@@ -266,7 +270,7 @@ void drawLinePart(GLfloat x1, GLfloat y1, GLfloat z1,
 }
 
 void drawRollLineAbs(GLfloat x1, GLfloat y1, GLfloat z1,
-		     GLfloat x2, GLfloat y2, GLfloat z2, int r, int g, int b, int a, int d1) {
+             GLfloat x2, GLfloat y2, GLfloat z2, int r, int g, int b, int a, int d1) {
   glPushMatrix();
   glRotatef((float)d1*360/1024, 0, 0, 1);
   glColor4ub(r, g, b, a);
@@ -278,7 +282,7 @@ void drawRollLineAbs(GLfloat x1, GLfloat y1, GLfloat z1,
 }
 
 void drawRollLine(GLfloat x, GLfloat y, GLfloat z, GLfloat width,
-		  int r, int g, int b, int a, int d1, int d2) {
+          int r, int g, int b, int a, int d1, int d2) {
   glPushMatrix();
   glTranslatef(x, y, z);
   glRotatef((float)d1*360/1024, 0, 0, 1);
@@ -292,10 +296,10 @@ void drawRollLine(GLfloat x, GLfloat y, GLfloat z, GLfloat width,
 }
 
 void drawSquare(GLfloat x1, GLfloat y1, GLfloat z1,
-		GLfloat x2, GLfloat y2, GLfloat z2,
-		GLfloat x3, GLfloat y3, GLfloat z3,
-		GLfloat x4, GLfloat y4, GLfloat z4,
-		int r, int g, int b) {
+        GLfloat x2, GLfloat y2, GLfloat z2,
+        GLfloat x3, GLfloat y3, GLfloat z3,
+        GLfloat x4, GLfloat y4, GLfloat z4,
+        int r, int g, int b) {
   glColor4ub(r, g, b, 64);
   glBegin(GL_TRIANGLE_FAN);
   glVertex3f(x1, y1, z1);
@@ -336,7 +340,7 @@ void drawStar(int f, GLfloat x, GLfloat y, GLfloat z, int r, int g, int b, float
 #define LASER_LINE_UP_SPEED 16
 
 void drawLaser(GLfloat x, GLfloat y, GLfloat width, GLfloat height,
-	       int cc1, int cc2, int cc3, int cc4, int cnt, int type) {
+           int cc1, int cc2, int cc3, int cc4, int cnt, int type) {
   int i, d;
   float gx, gy;
   glBegin(GL_TRIANGLE_FAN);
@@ -497,7 +501,7 @@ void drawBomb(GLfloat x, GLfloat y, GLfloat width, int cnt) {
 }
 
 void drawCircle(GLfloat x, GLfloat y, GLfloat width, int cnt,
-		int r1, int g1, int b1, int r2, int b2, int g2) {
+        int r1, int g1, int b1, int r2, int b2, int g2) {
   int i, d;
   GLfloat x1, y1, x2, y2;
   if ( (cnt&1) == 0 ) {
@@ -523,7 +527,7 @@ void drawCircle(GLfloat x, GLfloat y, GLfloat width, int cnt,
 }
 
 void drawShape(GLfloat x, GLfloat y, GLfloat size, int d, int cnt, int type,
-	       int r, int g, int b) {
+           int r, int g, int b) {
   GLfloat sz, sz2;
   glPushMatrix();
   glTranslatef(x, y, 0);
@@ -923,11 +927,11 @@ int drawTimeCenter(int n, int x ,int y, int s, int r, int g, int b) {
     if ( (i&1) == 1 || i == 0 ) {
       switch ( i ) {
       case 3:
-	drawLetter(41, x+s*1.16f, y, s, 0, r, g, b);
-	break;
+    drawLetter(41, x+s*1.16f, y, s, 0, r, g, b);
+    break;
       case 5:
-	drawLetter(40, x+s*1.16f, y, s, 0, r, g, b);
-	break;
+    drawLetter(40, x+s*1.16f, y, s, 0, r, g, b);
+    break;
       }
       x -= s*1.7f;
     } else {
