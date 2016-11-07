@@ -262,24 +262,33 @@ int main(int argc, char *argv[])
     initTitle();
 
     while (!quit) {
-        SDL_PollEvent(&event);
-        keys = SDL_GetKeyboardState(NULL);
-        if (keys[SDLK_ESCAPE] == SDL_KEYDOWN || event.type == SDL_QUIT) {
-            quit = 1;
-        }
-        if (keys[SDLK_p] == SDL_KEYDOWN) {
-            if (!pPressed) {
-                if (status == IN_GAME) {
-                    status = PAUSE;
-                } else if ( status == PAUSE ) {
-                    status = IN_GAME;
+        while(SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                quit = 1;
+            }
+            if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                    case SDLK_ESCAPE:
+                        quit = 1;
+                        break;
+                    case SDLK_p:
+                        if (!pPressed) {
+                            if (status == IN_GAME) {
+                                status = PAUSE;
+                            } else if ( status == PAUSE ) {
+                                status = IN_GAME;
+                            }
+                        }
+                        pPressed = 1;
+                        break;
+                    default:
+                        pPressed = 0;
+                        break;
                 }
             }
-            pPressed = 1;
-        } else {
-            pPressed = 0;
         }
 
+        keys = SDL_GetKeyboardState(NULL);
         nowTick = SDL_GetTicks();
         frame = (int)(nowTick-prvTickCount) / interval;
         if ( frame <= 0 ) {
