@@ -33,7 +33,7 @@
 
 static int noSound = 0;
 static int accframe = 0;
-static int pPrsd = 1;
+static int pPressed = 1;
 int status;
 int interval = INTERVAL_BASE;
 int tick = 0;
@@ -260,23 +260,23 @@ int main(int argc, char *argv[])
   initFirst();
   initTitle();
 
-  while ( !done ) {
+  while (!done) {
     SDL_PollEvent(&event);
     keys = SDL_GetKeyboardState(NULL);
     if (keys[SDLK_ESCAPE] == SDL_KEYDOWN || event.type == SDL_QUIT) {
         done = 1;
     }
     if (keys[SDLK_p] == SDL_KEYDOWN) {
-      if ( !pPrsd ) {
+      if (!pPressed) {
         if (status == IN_GAME) {
             status = PAUSE;
         } else if ( status == PAUSE ) {
             status = IN_GAME;
         }
       }
-      pPrsd = 1;
+      pPressed = 1;
     } else {
-      pPrsd = 0;
+      pPressed = 0;
     }
 
     nowTick = SDL_GetTicks();
@@ -285,9 +285,9 @@ int main(int argc, char *argv[])
       frame = 1;
       SDL_Delay(prvTickCount+interval-nowTick);
       if ( accframe ) {
-	prvTickCount = SDL_GetTicks();
+        prvTickCount = SDL_GetTicks();
       } else {
-	prvTickCount += interval;
+        prvTickCount += interval;
       }
     } else if ( frame > 5 ) {
       frame = 5;
