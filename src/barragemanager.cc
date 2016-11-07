@@ -23,9 +23,6 @@ Barrage barragePattern[BARRAGE_TYPE_NUM][BARRAGE_PATTERN_MAX];
 int barragePatternNum[BARRAGE_TYPE_NUM];
 
 #define SHARE_LOC "./data/"
-//static const char *BARRAGE_DIR_NAME[BARRAGE_TYPE_NUM] = {
-//  "normal", "/usr/share/rRootage/reversible", "/usr/share/rRootage/morph", //"/usr/share/rRootage/simple", "/usr/share/rRootage/morph_heavy", //"/usr/share/rRootage/psy",
-//};
 static const char *BARRAGE_DIR_NAME[BARRAGE_TYPE_NUM] = {
   "normal", "reversible", "morph", "simple", "morph_heavy", "psy",
 };
@@ -40,7 +37,7 @@ static int readBulletMLFiles(const char *dirPath, Barrage brg[]) {
   strcpy(fullDirPath, SHARE_LOC);
   strcat(fullDirPath, dirPath);
 
-  if ( (dp = opendir(fullDirPath)) == NULL ) {
+  if ((dp = opendir(fullDirPath)) == NULL) {
     fprintf(stderr, "Can't open directory: %s\n", fullDirPath);
     exit(1);
   }
@@ -51,7 +48,7 @@ static int readBulletMLFiles(const char *dirPath, Barrage brg[]) {
     strncat(fileName, dir->d_name, sizeof(fileName)-strlen(fileName)-1);
     brg[i].bulletml = new BulletMLParserTinyXML(fileName);
     brg[i].bulletml->build(); i++;
-    printf("%s\n", fileName);
+    //printf("%s\n", fileName);
   }
   closedir(dp);
   return i;
@@ -60,7 +57,7 @@ static int readBulletMLFiles(const char *dirPath, Barrage brg[]) {
 void initBarragemanager() {
   for ( int i=0 ; i<BARRAGE_TYPE_NUM ; i++ ) {
     barragePatternNum[i] = readBulletMLFiles(BARRAGE_DIR_NAME[i], barragePattern[i]);
-    printf("--------\n");
+    //printf("--------\n");
   }
 }
 
