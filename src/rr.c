@@ -68,7 +68,6 @@ void quitLast() {
     closeBarragemanager();
     closeSDL();
     SDL_Quit();
-    exit(1);
 }
 
 void initTitleStage(int stg) {
@@ -234,7 +233,7 @@ static void parseArgs(int argc, char *argv[]) {
       accframe = 1;
     } else {
       usage(argv[0]);
-      exit(1);
+      exit(EXIT_FAILURE);
     }
   }
 }
@@ -316,5 +315,5 @@ int main(int argc, char *argv[])
         SDL_GL_SwapWindow(window);
     }
     quitLast();
-    return 0;
+    return EXIT_SUCCESS;
 }
