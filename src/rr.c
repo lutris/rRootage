@@ -238,14 +238,14 @@ int main(int argc, char *argv[]) {
   long prvTickCount = 0;
   int i;
   SDL_Event event;
-  SDL_Window *window;
+  SDL_Window *window = NULL;
   long nowTick;
   int frame;
 
   parseArgs(argc, argv);
 
   initDegutil();
-  initSDL(&window);
+  initSDL(window);
   initFirst();
   initTitle();
 
