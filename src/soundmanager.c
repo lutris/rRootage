@@ -79,7 +79,7 @@ static void loadSounds() {
         strcat(name, "sounds/");
         strcat(name, musicFileName[i]);
         if (NULL == (music[i] = Mix_LoadMUS(name))) {
-            fprintf(stderr, "Couldn't load: %s\n", name);
+            fprintf(stderr, "Couldn't load music '%s': %s\n", name, Mix_GetError());
             useAudio = 0;
             return;
         }
@@ -90,7 +90,7 @@ static void loadSounds() {
         strcat(name, chunkFileName[i]);
         chunk[i] = Mix_LoadWAV(name);
         if (NULL == chunk[i]) {
-            fprintf(stderr, "Couldn't load: %s\n", name);
+            fprintf(stderr, "Couldn't load sound '%s': %s\n", name, Mix_GetError());
             useAudio = 0;
             return;
         }
