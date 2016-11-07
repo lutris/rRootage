@@ -21,13 +21,9 @@ OBJS =	$(NAME).$(O) \
 	frag.$(O) background.$(O) letterrender.$(O) shot.$(O) \
 	screen.$(O) vector.$(O) degutil.$(O) rand.$(O) mt19937int.$(O) \
 	soundmanager.$(O) attractmanager.$(O)
-	# \
-	#$(NAME)_res.$(O)
 
 $(PROG): $(OBJS)
 	$(CXX) $(CPPFLAGS) -o $(PROG) $(OBJS) $(LDFLAGS)
 
-#$(NAME)_res.o: $(NAME).rc
-#	windres -i $(NAME).rc -o $(NAME)_res.o
 clean:
 	$(RM) $(PROG) *.$(O)
