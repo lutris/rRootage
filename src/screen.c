@@ -934,16 +934,16 @@ int getPadState() {
     x = SDL_JoystickGetAxis(stick, 0);
     y = SDL_JoystickGetAxis(stick, 1);
   }
-  if ( keys[SDLK_RIGHT] == SDL_PRESSED || keys[SDLK_KP6] == SDL_PRESSED || x > JOYSTICK_AXIS ) {
+  if ( keys[SDLK_RIGHT] == SDL_PRESSED || keys[SDLK_KP_6] == SDL_PRESSED || x > JOYSTICK_AXIS ) {
     pad |= PAD_RIGHT;
   }
-  if ( keys[SDLK_LEFT] == SDL_PRESSED || keys[SDLK_KP4] == SDL_PRESSED || x < -JOYSTICK_AXIS ) {
+  if ( keys[SDLK_LEFT] == SDL_PRESSED || keys[SDLK_KP_4] == SDL_PRESSED || x < -JOYSTICK_AXIS ) {
     pad |= PAD_LEFT;
   }
-  if ( keys[SDLK_DOWN] == SDL_PRESSED || keys[SDLK_KP2] == SDL_PRESSED || y > JOYSTICK_AXIS ) {
+  if ( keys[SDLK_DOWN] == SDL_PRESSED || keys[SDLK_KP_2] == SDL_PRESSED || y > JOYSTICK_AXIS ) {
     pad |= PAD_DOWN;
   }
-  if ( keys[SDLK_UP] == SDL_PRESSED ||  keys[SDLK_KP8] == SDL_PRESSED || y < -JOYSTICK_AXIS ) {
+  if ( keys[SDLK_UP] == SDL_PRESSED ||  keys[SDLK_KP_8] == SDL_PRESSED || y < -JOYSTICK_AXIS ) {
     pad |= PAD_UP;
   }
   return pad;
