@@ -71,9 +71,6 @@ void initGL(SDL_Window *window, SDL_GLContext context) {
 
     //SDL_GL_SetSwapInterval(1);
 
-    const char *driverName = SDL_GetCurrentVideoDriver();
-    printf("Video driver: %s\n", driverName);
-
     glViewport(0, 0, screenWidth, screenHeight);
     glScissor(0, 0, screenWidth, screenHeight);
 
@@ -141,54 +138,58 @@ SDL_Joystick *stick = NULL;
 int joystickMode = 1;
 
 void initSDL(SDL_Window **window) {
-  Uint32 videoFlags;
+    Uint32 videoFlags;
 
-  if ( lowres ) {
-    screenWidth  = LOWRES_SCREEN_WIDTH;
-    screenHeight = LOWRES_SCREEN_HEIGHT;
-  } else {
-    screenWidth  = SCREEN_WIDTH;
-    screenHeight = SCREEN_HEIGHT;
-  }
+    if ( lowres ) {
+        screenWidth  = LOWRES_SCREEN_WIDTH;
+        screenHeight = LOWRES_SCREEN_HEIGHT;
+    } else {
+        screenWidth  = SCREEN_WIDTH;
+        screenHeight = SCREEN_HEIGHT;
+    }
 
-  /* Initialize SDL */
-  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-    fprintf(stderr, "Unable to initialize SDL: %s\n", SDL_GetError());
-    exit(1);
-  }
-  if ( SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0 ) {
-    fprintf(stderr, "Unable to initialize SDL_JOYSTICK: %s\n", SDL_GetError());
-    joystickMode = 0;
-  }
+    /* Initialize SDL */
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        fprintf(stderr, "Unable to initialize SDL: %s\n", SDL_GetError());
+        exit(1);
+    }
 
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    const char *driverName = SDL_GetCurrentVideoDriver();
+    printf("Video driver: %s\n", driverName);
 
-  /* Create an OpenGL screen */
-  videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
-  if (windowMode) {
-    videoFlags |= SDL_WINDOW_RESIZABLE;
-  } else {
-    printf("Fullscreen mode disabled during SDL2 port\n");
-    //videoFlags |= SDL_WINDOW_FULLSCREEN;
-  }
-  *window = SDL_CreateWindow(CAPTION,
-          SDL_WINDOWPOS_CENTERED,
-          SDL_WINDOWPOS_CENTERED,
-          screenWidth, screenHeight, videoFlags);
-  if (!window) {
-    fprintf(stderr, "Unable to create OpenGL screen: %s\n", SDL_GetError());
-    SDL_Quit();
-    exit(2);
-  }
+    if ( SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0 ) {
+        fprintf(stderr, "Unable to initialize SDL_JOYSTICK: %s\n", SDL_GetError());
+        joystickMode = 0;
+    }
 
-  if (joystickMode == 1) {
-    stick = SDL_JoystickOpen(0);
-  }
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-  SDL_ShowCursor(SDL_DISABLE);
+    /* Create an OpenGL screen */
+    videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+    if (windowMode) {
+        videoFlags |= SDL_WINDOW_RESIZABLE;
+    } else {
+        printf("Fullscreen mode disabled during SDL2 port\n");
+        //videoFlags |= SDL_WINDOW_FULLSCREEN;
+    }
+    *window = SDL_CreateWindow(CAPTION,
+            SDL_WINDOWPOS_CENTERED,
+            SDL_WINDOWPOS_CENTERED,
+            screenWidth, screenHeight, videoFlags);
+    if (!window) {
+        fprintf(stderr, "Unable to create OpenGL screen: %s\n", SDL_GetError());
+        SDL_Quit();
+        exit(2);
+    }
+
+    if (joystickMode == 1) {
+        stick = SDL_JoystickOpen(0);
+    }
+
+    SDL_ShowCursor(SDL_DISABLE);
 }
 
 void closeSDL() {
