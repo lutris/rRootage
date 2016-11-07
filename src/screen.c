@@ -960,14 +960,14 @@ int getButtonState() {
     btn3 = SDL_JoystickGetButton(stick, 2);
     btn4 = SDL_JoystickGetButton(stick, 3);
   }
-  if ( keys[SDLK_z] == SDL_PRESSED || btn1 || btn4 ) {
+  if ( keys[SDLK_z] == SDL_KEYDOWN || btn1 || btn4 ) {
     if ( !buttonReversed ) {
       btn |= PAD_BUTTON1;
     } else {
       btn |= PAD_BUTTON2;
     }
   }
-  if ( keys[SDLK_x] == SDL_PRESSED || btn2 || btn3 ) {
+  if ( keys[SDLK_x] == SDL_KEYDOWN || btn2 || btn3 ) {
     if ( !buttonReversed ) {
       btn |= PAD_BUTTON2;
     } else {
