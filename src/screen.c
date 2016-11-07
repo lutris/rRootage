@@ -155,15 +155,16 @@ void initSDL(SDL_Window *window) {
   SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
   /* Create an OpenGL screen */
+  videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
   if (windowMode) {
-    videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+    videoFlags |= SDL_WINDOW_RESIZABLE;
   } else {
-    // videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
-    videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+    printf("Fullscreen mode disabled during SDL2 port\n");
+    //videoFlags |= SDL_WINDOW_FULLSCREEN;
   }
   window = SDL_CreateWindow(CAPTION, 
-          SDL_WINDOWPOS_UNDEFINED, 
-          SDL_WINDOWPOS_UNDEFINED,
+          SDL_WINDOWPOS_CENTERED,
+          SDL_WINDOWPOS_CENTERED,
           screenWidth, screenHeight, videoFlags);
   if (!window) {
     fprintf(stderr, "Unable to create OpenGL screen: %s\n", SDL_GetError());
