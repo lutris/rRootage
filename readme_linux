@@ -12,7 +12,7 @@ Compiling:
 Install the OpenGL development libraries. (This is the hard part.)
 Install libBulletML. (http://user.ecc.u-tokyo.ac.jp/~s31552/wp/libbulletml/index_en.html Compiling should be simple. Copy the resulting .a file to /usr/lib)
 Install SDL_mixer.
-Compile with "make -f makefile.lin"
+Compile with "make"
 The file "rr" goes in your path, and all directories except src go in /usr/share/games/rRootage. src is unneeded after compiling.
 
 Uninstall:
