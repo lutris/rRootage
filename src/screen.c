@@ -110,7 +110,7 @@ static GLuint titleTexture;
 int lowres = 0;
 int windowMode = 0;
 int brightness = DEFAULT_BRIGHTNESS;
-Uint8 *keys;
+const Uint8 *keys;
 SDL_Joystick *stick = NULL;
 int joystickMode = 1;
 
