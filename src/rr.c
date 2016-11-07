@@ -14,7 +14,7 @@
 #include <string.h>
 #include <time.h>
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include "rr.h"
 #include "screen.h"
@@ -32,32 +32,43 @@
 #include "attractmanager.h"
 
 static int noSound = 0;
-
-// Initialize and load preference.
-static void initFirst() {
-  time_t timer;
-  time(&timer);
-  srand(timer);
-
-  loadPreference();
-  initBarragemanager();
-  initAttractManager();
-  if ( !noSound ) initSound();
-  initGameStateFirst();
-}
-
-// Quit and save preference.
-void quitLast() {
-  if ( !noSound ) closeSound();
-  savePreference();
-  closeFoes();
-  closeBarragemanager();
-  closeSDL();
-  SDL_Quit();
-  exit(1);
-}
-
+static int accframe = 0;
+static int pPrsd = 1;
 int status;
+int interval = INTERVAL_BASE;
+int tick = 0;
+
+/**
+ * Initialize and load preference.
+ */
+static void initFirst() {
+    time_t timer;
+    time(&timer);
+    srand(timer);
+
+    loadPreference();
+    initBarragemanager();
+    initAttractManager();
+    if ( !noSound ) {
+        initSound();
+    }
+    initGameStateFirst();
+}
+
+/**
+ * Quit and save preferences
+ */
+void quitLast() {
+    if (!noSound) {
+        closeSound();
+    }
+    savePreference();
+    closeFoes();
+    closeBarragemanager();
+    closeSDL();
+    SDL_Quit();
+    exit(1);
+}
 
 void initTitleStage(int stg) {
   initFoes();
@@ -193,8 +204,6 @@ static void draw() {
   }
 }
 
-static int accframe = 0;
-
 static void usage(char *argv0) {
   fprintf(stderr, "Usage: %s [-lowres] [-nosound] [-window] [-reverse] [-nowait] [-accframe]\n", argv0);
 }
@@ -229,10 +238,6 @@ static void parseArgs(int argc, char *argv[]) {
   }
 }
 
-int interval = INTERVAL_BASE;
-int tick = 0;
-static int pPrsd = 1;
-
 int main(int argc, char *argv[]) 
 {
   int done = 0;
@@ -258,16 +263,16 @@ int main(int argc, char *argv[])
   while ( !done ) {
     SDL_PollEvent(&event);
     keys = SDL_GetKeyboardState(NULL);
-    if ( keys[SDLK_ESCAPE] == SDL_KEYDOWN || event.type == SDL_QUIT ) {
+    if (keys[SDLK_ESCAPE] == SDL_KEYDOWN || event.type == SDL_QUIT) {
         done = 1;
     }
-    if ( keys[SDLK_p] == SDL_KEYDOWN ) {
+    if (keys[SDLK_p] == SDL_KEYDOWN) {
       if ( !pPrsd ) {
-	if ( status == IN_GAME ) {
-	  status = PAUSE;
-	} else if ( status == PAUSE ) {
-	  status = IN_GAME;
-	}
+        if (status == IN_GAME) {
+            status = PAUSE;
+        } else if ( status == PAUSE ) {
+            status = IN_GAME;
+        }
       }
       pPrsd = 1;
     } else {
