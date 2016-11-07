@@ -10,12 +10,6 @@
  * @version $Revision: 1.6 $
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include <math.h>
-#include <string.h>
-
 #include "genmcr.h"
 #include "screen.h"
 #include "rr.h"
@@ -25,18 +19,54 @@
 #include "boss_mtd.h"
 
 #define FAR_PLANE 720
-
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 #define LOWRES_SCREEN_WIDTH 320
 #define LOWRES_SCREEN_HEIGHT 240
 #define SHARE_LOC "./data/"
+#define LASER_ALPHA 100
+#define LASER_LINE_ALPHA 50
+#define LASER_LINE_ROLL_SPEED 17
+#define LASER_LINE_UP_SPEED 16
+#define SHAPE_POINT_SIZE 0.05f
+#define SHAPE_BASE_COLOR_R 250
+#define SHAPE_BASE_COLOR_G 240
+#define SHAPE_BASE_COLOR_B 180
+#define CORE_HEIGHT 0.2f
+#define CORE_RING_SIZE 0.6f
+#define SHAPE_POINT_SIZE_L 0.07f
+#define JOYSTICK_AXIS 16384
+#define SHIP_DRUM_R 0.4f
+#define SHIP_DRUM_WIDTH 0.05f
+#define SHIP_DRUM_HEIGHT 0.35f
+#define SHOT_WIDTH 0.1
+#define SHOT_HEIGHT 0.2
 
 static GLuint starTexture;
 static GLuint smokeTexture;
 static GLuint titleTexture;
 
 static int screenWidth, screenHeight;
+
+static int screenShakeCnt = 0;
+static int screenShakeType = 0;
+
+int lowres = 0;
+int windowMode = 0;
+int brightness = DEFAULT_BRIGHTNESS;
+int joystickMode = 1;
+int buttonReversed = 0;
+static int ikaClr[2][3][3] = {
+  {{230, 230, 255}, {100, 100, 200}, {50, 50, 150}},
+  {{0, 0, 0}, {200, 0, 0}, {100, 0, 0}},
+};
+
+
+float zoom = 15;
+
+const Uint8 *keys;
+
+SDL_Joystick *stick = NULL;
 
 // Reset viewport when the screen is resized.
 static void screenResized() {
@@ -129,13 +159,6 @@ void deleteTexture(GLuint *texture) {
   glDeleteTextures(1, texture);
 }
 
-int lowres = 0;
-int windowMode = 0;
-int brightness = DEFAULT_BRIGHTNESS;
-const Uint8 *keys;
-SDL_Joystick *stick = NULL;
-int joystickMode = 1;
-
 void initSDL(SDL_Window **window) {
     Uint32 videoFlags;
 
@@ -201,28 +224,24 @@ void closeSDL() {
   SDL_ShowCursor(SDL_ENABLE);
 }
 
-float zoom = 15;
-static int screenShakeCnt = 0;
-static int screenShakeType = 0;
-
 static void setEyepos() {
-  float x, y;
-  glPushMatrix();
-  if ( screenShakeCnt > 0 ) {
-    switch ( screenShakeType ) {
-    case 0:
-      x = (float)randNS2(256)/5000.0f;
-      y = (float)randNS2(256)/5000.0f;
-      break;
-    default:
-      x = (float)randNS2(256)*screenShakeCnt/21000.0f;
-      y = (float)randNS2(256)*screenShakeCnt/21000.0f;
-      break;
+    float x, y;
+    glPushMatrix();
+    if (screenShakeCnt > 0) {
+        switch (screenShakeType) {
+        case 0:
+            x = (float)randNS2(256)/5000.0f;
+            y = (float)randNS2(256)/5000.0f;
+            break;
+        default:
+            x = (float)randNS2(256)*screenShakeCnt/21000.0f;
+            y = (float)randNS2(256)*screenShakeCnt/21000.0f;
+            break;
+        }
+        gluLookAt(0, 0, zoom, x, y, 0, 0.0f, 1.0f, 0.0f);
+    } else {
+        gluLookAt(0, 0, zoom, 0, 0, 0, 0.0f, 1.0f, 0.0f);
     }
-    gluLookAt(0, 0, zoom, x, y, 0, 0.0f, 1.0f, 0.0f);
-  } else {
-    gluLookAt(0, 0, zoom, 0, 0, 0, 0.0f, 1.0f, 0.0f);
-  }
 }
 
 void setScreenShake(int type, int cnt) {
@@ -348,11 +367,6 @@ void drawStar(int f, GLfloat x, GLfloat y, GLfloat z, int r, int g, int b, float
   glDisable(GL_TEXTURE_2D);
 }
 
-#define LASER_ALPHA 100
-#define LASER_LINE_ALPHA 50
-#define LASER_LINE_ROLL_SPEED 17
-#define LASER_LINE_UP_SPEED 16
-
 void drawLaser(GLfloat x, GLfloat y, GLfloat width, GLfloat height,
            int cc1, int cc2, int cc3, int cc4, int cnt, int type) {
   int i, d;
@@ -407,16 +421,6 @@ void drawLaser(GLfloat x, GLfloat y, GLfloat width, GLfloat height,
   glEnd();
 }
 
-#define SHAPE_POINT_SIZE 0.05f
-#define SHAPE_BASE_COLOR_R 250
-#define SHAPE_BASE_COLOR_G 240
-#define SHAPE_BASE_COLOR_B 180
-
-#define CORE_HEIGHT 0.2f
-#define CORE_RING_SIZE 0.6f
-
-#define SHAPE_POINT_SIZE_L 0.07f
-
 static void drawRing(GLfloat x, GLfloat y, int d1, int d2, int r, int g, int b) {
   int i, d;
   float x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4;
@@ -458,11 +462,6 @@ void drawCore(GLfloat x, GLfloat y, int cnt, int r, int g, int b) {
     drawRing(x, cy, (cnt*(4+i))&1023, (sctbl[(cnt*(5+i))&1023]/4)&1023, r, g, b);
   }
 }
-
-#define SHIP_DRUM_R 0.4f
-#define SHIP_DRUM_WIDTH 0.05f
-#define SHIP_DRUM_HEIGHT 0.35f
-
 void drawShipShape(GLfloat x, GLfloat y, float d, int inv) {
   int i;
   glPushMatrix();
@@ -705,11 +704,6 @@ void drawShape(GLfloat x, GLfloat y, GLfloat size, int d, int cnt, int type,
   glPopMatrix();
 }
 
-static int ikaClr[2][3][3] = {
-  {{230, 230, 255}, {100, 100, 200}, {50, 50, 150}},
-  {{0, 0, 0}, {200, 0, 0}, {100, 0, 0}},
-};
-
 void drawShapeIka(GLfloat x, GLfloat y, GLfloat size, int d, int cnt, int type, int c) {
   GLfloat sz, sz2, sz3;
   glPushMatrix();
@@ -773,9 +767,6 @@ void drawShapeIka(GLfloat x, GLfloat y, GLfloat size, int d, int cnt, int type, 
   }
   glPopMatrix();
 }
-
-#define SHOT_WIDTH 0.1
-#define SHOT_HEIGHT 0.2
 
 static int shtClr[3][3][3] = {
   {{200, 200, 225}, {50, 50, 200}, {200, 200, 225}},
@@ -956,8 +947,6 @@ int drawTimeCenter(int n, int x ,int y, int s, int r, int g, int b) {
   return y;
 }
 
-#define JOYSTICK_AXIS 16384
-
 int getPadState() {
   int x = 0, y = 0;
   int pad = 0;
@@ -979,8 +968,6 @@ int getPadState() {
   }
   return pad;
 }
-
-int buttonReversed = 0;
 
 int getButtonState() {
   int btn = 0;
