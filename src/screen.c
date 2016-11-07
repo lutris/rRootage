@@ -52,37 +52,36 @@ static void screenResized() {
 }
 
 void resized(int width, int height) {
-  screenWidth = width; 
+  screenWidth = width;
   screenHeight = height;
   screenResized();
 }
 
 // Init OpenGL.
-void initGL(SDL_Window *window, SDL_GLContext *context) {
-  context = SDL_GL_CreateContext(window);
-  if (context == NULL) {
-      fprintf(stderr, "Couldn't create OpenGL context! %s\n", SDL_GetError());
-      SDL_Quit();
-      exit(2);
-  }
-  SDL_GL_SetSwapInterval(1);
+void initGL(SDL_Window *window, SDL_GLContext context) {
+    context = SDL_GL_CreateContext(window);
+    if (context == NULL) {
+        fprintf(stderr, "Couldn't create OpenGL context! %s\n", SDL_GetError());
+        SDL_Quit();
+        exit(2);
+    }
+    SDL_GL_SetSwapInterval(1);
 
-  glViewport(0, 0, screenWidth, screenHeight);
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-  glLineWidth(1);
-  glEnable(GL_LINE_SMOOTH);
+    glViewport(0, 0, screenWidth, screenHeight);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glLineWidth(1);
+    glEnable(GL_LINE_SMOOTH);
 
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-  glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glEnable(GL_BLEND);
 
-  glDisable(GL_LIGHTING);
-  glDisable(GL_CULL_FACE);
-  glDisable(GL_DEPTH_TEST);
-  glDisable(GL_TEXTURE_2D);
-  glDisable(GL_COLOR_MATERIAL);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_COLOR_MATERIAL);
 
-  resized(screenWidth, screenHeight);
-
+    resized(screenWidth, screenHeight);
 }
 
 void loadTextures() {
@@ -132,7 +131,7 @@ const Uint8 *keys;
 SDL_Joystick *stick = NULL;
 int joystickMode = 1;
 
-void initSDL(SDL_Window *window) {
+void initSDL(SDL_Window **window) {
   Uint32 videoFlags;
 
   if ( lowres ) {
@@ -166,7 +165,7 @@ void initSDL(SDL_Window *window) {
     printf("Fullscreen mode disabled during SDL2 port\n");
     //videoFlags |= SDL_WINDOW_FULLSCREEN;
   }
-  window = SDL_CreateWindow(CAPTION, 
+  *window = SDL_CreateWindow(CAPTION,
           SDL_WINDOWPOS_CENTERED,
           SDL_WINDOWPOS_CENTERED,
           screenWidth, screenHeight, videoFlags);
