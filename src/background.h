@@ -19,6 +19,6 @@ typedef struct {
   int r, g, b, a;
 } Plane;
 
-void initBackground();
+void initBackground(int);
 void moveBackground();
 void drawBackground();

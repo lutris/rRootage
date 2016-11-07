@@ -28,7 +28,7 @@ void initBackground(int s) {
       pl = &(plane[i]);
       pl->xn = 8; pl->yn = 16;
       pl->width = 3.0f; pl->height = 2.0f;
-      pl->x = -pl->width*pl->xn/2; 
+      pl->x = -pl->width*pl->xn/2;
       pl->y = -pl->height*pl->yn/2;
       pl->z = -10.0f;
       pl->ox = pl->oy = 0;
@@ -57,7 +57,7 @@ void initBackground(int s) {
       pl = &(plane[i]);
       pl->xn = 8; pl->yn = 8;
       pl->width = 3.0f; pl->height = 3.0f;
-      pl->x = -pl->width*pl->xn/2; 
+      pl->x = -pl->width*pl->xn/2;
       pl->y = -pl->height*pl->yn/2;
       pl->z = -10.0f;
       pl->ox = pl->oy = 0;
@@ -90,7 +90,7 @@ void initBackground(int s) {
 	pl->width = 1.5f; pl->height = 1.5f;
 	break;
       }
-      pl->x = -pl->width*pl->xn/2; 
+      pl->x = -pl->width*pl->xn/2;
       pl->y = -pl->height*pl->yn/2;
       pl->z = -10.0f;
       pl->ox = pl->oy = 0;
@@ -119,11 +119,11 @@ void initBackground(int s) {
       pl = &(plane[i]);
       pl->xn = 8; pl->yn = 16;
       pl->width = 4.0f; pl->height = 2.5f;
-      pl->x = -pl->width*pl->xn/2; 
+      pl->x = -pl->width*pl->xn/2;
       pl->y = -pl->height*pl->yn/2;
       pl->z = -10.0f;
       pl->ox = pl->oy = 0;
-      pl->r = 200; pl->g = 200; pl->b = 100; 
+      pl->r = 200; pl->g = 200; pl->b = 100;
       switch ( i ) {
       case 0:
 	pl->a = 72;

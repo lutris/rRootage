@@ -9,7 +9,7 @@
  *
  * @version $Revision: 1.4 $
  */
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include <GL/gl.h>
 #include <GL/glu.h>
