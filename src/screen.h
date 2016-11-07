@@ -9,14 +9,17 @@
  *
  * @version $Revision: 1.4 $
  */
+#define GLEW_STATIC
 #include <stdio.h>
 #include <stdlib.h>
 
 #include <math.h>
 #include <string.h>
 
+#include <GL/glew.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <GL/glut.h>
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>

@@ -10,7 +10,7 @@
  * @version $Revision: 1.4 $
  */
 extern "C" {
-#include "SDL.h"
+#include <SDL2/SDL.h>
 #include <sys/types.h>
 #include <dirent.h>
 #include "genmcr.h"
