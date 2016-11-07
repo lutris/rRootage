@@ -7,15 +7,14 @@ RM     = rm -f
 CC     = gcc
 CXX    = g++
 
-PROG   = $(NAME)
+PROG   = rrootage
 
 DEFAULT_CFLAGS = `sdl-config --cflags`
-LDFLAGS        = `sdl-config --libs` -L. -lglut -lbulletml -lSDL_mixer -mwindows -lstdc++
-#-lglu32 -lopengl32 -lmingw32 -lmingwex
-MORE_CFLAGS = -DLINUX -O3 -Wall
+LDFLAGS        = `sdl-config --libs` -L. -lGLU -lGL bulletml/libbulletml.a -lSDL_mixer
+MORE_CFLAGS = -O2 -Wall
 
-CFLAGS   = $(DEFAULT_CFLAGS) $(MORE_CFLAGS)
-CPPFLAGS = $(DEFAULT_CFLAGS) $(MORE_CFLAGS) -I./bulletml/
+CFLAGS   = $(DEFAULT_CFLAGS) $(MORE_CFLAGS) -DLINUX
+CPPFLAGS = $(DEFAULT_CFLAGS) $(MORE_CFLAGS) -DLINUX -I./bulletml/
 
 OBJS =	$(NAME).$(O) \
 	foe.$(O) foecommand.$(O) barragemanager.$(O) boss.$(O) ship.$(O) laser.$(O) \
