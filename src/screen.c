@@ -32,9 +32,6 @@
 #define LOWRES_SCREEN_WIDTH 320
 #define LOWRES_SCREEN_HEIGHT 240
 #define SHARE_LOC "./data/"
-#define STAR_BMP "star.bmp"
-#define SMOKE_BMP "smoke.bmp"
-#define TITLE_BMP "title.bmp"
 
 static GLuint starTexture;
 static GLuint smokeTexture;
@@ -85,13 +82,13 @@ void initGL(SDL_Window *window, SDL_GLContext context) {
 }
 
 void loadTextures() {
-  loadGLTexture(STAR_BMP, &starTexture);
-  loadGLTexture(SMOKE_BMP, &smokeTexture);
-  loadGLTexture(TITLE_BMP, &titleTexture);
+    loadGLTexture("star.bmp", &starTexture);
+    loadGLTexture("smoke.bmp", &smokeTexture);
+    loadGLTexture("title.bmp", &titleTexture);
 }
 
 // Load bitmaps and convert to textures.
-void loadGLTexture(char *fileName, GLuint *texture) {
+void loadGLTexture(const char *fileName, GLuint *texture) {
   SDL_Surface *surface;
   int mode = GL_RGB;
 
