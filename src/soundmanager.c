@@ -21,7 +21,7 @@
 static int useAudio = 0;
 
 #define MUSIC_NUM 3
-#define SHARE_LOC "/usr/share/games/rRootage/"
+#define SHARE_LOC "./data/"
 
 static char *musicFileName[MUSIC_NUM] = {
   "stg_a.ogg", "stg_b.ogg", "stg_c.ogg",

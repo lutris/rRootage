@@ -22,7 +22,7 @@ extern "C" {
 Barrage barragePattern[BARRAGE_TYPE_NUM][BARRAGE_PATTERN_MAX];
 int barragePatternNum[BARRAGE_TYPE_NUM];
 
-#define SHARE_LOC "/usr/share/games/rRootage/"
+#define SHARE_LOC "./data/"
 //static const char *BARRAGE_DIR_NAME[BARRAGE_TYPE_NUM] = {
 //  "normal", "/usr/share/rRootage/reversible", "/usr/share/rRootage/morph", //"/usr/share/rRootage/simple", "/usr/share/rRootage/morph_heavy", //"/usr/share/rRootage/psy",
 //};

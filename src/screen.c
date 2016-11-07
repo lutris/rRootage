@@ -31,7 +31,7 @@
 #define SCREEN_HEIGHT 480
 #define LOWRES_SCREEN_WIDTH 320
 #define LOWRES_SCREEN_HEIGHT 240
-#define SHARE_LOC "/usr/share/games/rRootage/"
+#define SHARE_LOC "./data/"
 
 static int screenWidth, screenHeight;
 
