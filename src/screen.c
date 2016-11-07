@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "SDL.h"
+#include <SDL.h>
 
 #include <math.h>
 #include <string.h>
@@ -45,7 +45,8 @@ static void screenResized() {
 }
 
 void resized(int width, int height) {
-  screenWidth = width; screenHeight = height;
+  screenWidth = width; 
+  screenHeight = height;
   screenResized();
 }
 
@@ -113,7 +114,7 @@ Uint8 *keys;
 SDL_Joystick *stick = NULL;
 int joystickMode = 1;
 
-void initSDL() {
+void initSDL(SDL_Window *window) {
   Uint32 videoFlags;
 
   if ( lowres ) {
@@ -136,11 +137,16 @@ void initSDL() {
 
   /* Create an OpenGL screen */
   if ( windowMode ) {
-    videoFlags = SDL_OPENGL | SDL_RESIZABLE;
+    videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
   } else {
-    videoFlags = SDL_OPENGL | SDL_FULLSCREEN;
+    videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
   }
-  if ( SDL_SetVideoMode(screenWidth, screenHeight, 0, videoFlags) == NULL ) {
+  window = SDL_CreateWindow(
+          CAPTION, 
+          SDL_WINDOWPOS_UNDEFINED, 
+          SDL_WINDOWPOS_UNDEFINED,
+          screenWidth, screenHeight, videoFlags);
+  if (window == NULL) {
     fprintf(stderr, "Unable to create OpenGL screen: %s\n", SDL_GetError());
     SDL_Quit();
     exit(2);
@@ -150,8 +156,7 @@ void initSDL() {
     stick = SDL_JoystickOpen(0);
   }
 
-  /* Set the title bar in environments that support it */
-  SDL_WM_SetCaption(CAPTION, NULL);
+  SDL_GLContext glcontext = SDL_GL_CreateContext(window);
 
   initGL();
   loadGLTexture(STAR_BMP, &starTexture);
@@ -206,10 +211,6 @@ void drawGLSceneStart() {
 
 void drawGLSceneEnd() {
   glPopMatrix();
-}
-
-void swapGLScene() {
-  SDL_GL_SwapBuffers();
 }
 
 void drawBox(GLfloat x, GLfloat y, GLfloat width, GLfloat height,

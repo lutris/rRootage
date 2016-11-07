@@ -9,11 +9,12 @@
  *
  * @version $Revision: 1.4 $
  */
-#include "SDL.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
+
+#include <SDL.h>
 
 #include "rr.h"
 #include "screen.h"
@@ -216,7 +217,7 @@ static void parseArgs(int argc, char *argv[]) {
       if ( brightness < 0 || brightness > 256 ) {
 	brightness = DEFAULT_BRIGHTNESS;
       }
-      }*/ 
+      }*/
     else if ( strcmp(argv[i], "-nowait") == 0 ) {
       nowait = 1;
     } else if ( strcmp(argv[i], "-accframe") == 0 ) {
@@ -237,13 +238,14 @@ int main(int argc, char *argv[]) {
   long prvTickCount = 0;
   int i;
   SDL_Event event;
+  SDL_Window *window;
   long nowTick;
   int frame;
 
   parseArgs(argc, argv);
 
   initDegutil();
-  initSDL();
+  initSDL(&window);
   initFirst();
   initTitle();
 
@@ -288,7 +290,7 @@ int main(int argc, char *argv[]) {
     drawGLSceneStart();
     draw();
     drawGLSceneEnd();
-    swapGLScene();
+    SDL_GL_SwapWindow(window);
   }
   quitLast();
   return 0;

@@ -9,7 +9,7 @@
  *
  * @version $Revision: 1.4 $
  */
-#include "SDL.h"
+#include <SDL.h>
 
 #include <GL/gl.h>
 #include <GL/glu.h>
@@ -40,12 +40,11 @@ void loadModel(char *fileName, GLuint *model);
 void loadGLTexture(char*, GLuint*);
 void generateTexture(GLuint*);
 void deleteTexture(GLuint*);
-void initSDL();
+void initSDL(SDL_Window*);
 void closeSDL();
 void resized(int, int);
 void drawGLSceneStart();
 void drawGLSceneEnd();
-void swapGLScene();
 
 void setScreenShake(int type, int cnt);
 void moveScreenShake();
