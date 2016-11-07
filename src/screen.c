@@ -32,6 +32,13 @@
 #define LOWRES_SCREEN_WIDTH 320
 #define LOWRES_SCREEN_HEIGHT 240
 #define SHARE_LOC "./data/"
+#define STAR_BMP "star.bmp"
+#define SMOKE_BMP "smoke.bmp"
+#define TITLE_BMP "title.bmp"
+
+static GLuint starTexture;
+static GLuint smokeTexture;
+static GLuint titleTexture;
 
 static int screenWidth, screenHeight;
 
@@ -51,10 +58,13 @@ void resized(int width, int height) {
 }
 
 // Init OpenGL.
-static void initGL() {
+void initGL(SDL_Window *window, SDL_GLContext *context) {
+  context = SDL_GL_CreateContext(window);
+
+  SDL_GL_SetSwapInterval(1);
+
   glViewport(0, 0, screenWidth, screenHeight);
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-
   glLineWidth(1);
   glEnable(GL_LINE_SMOOTH);
 
@@ -68,6 +78,13 @@ static void initGL() {
   glDisable(GL_COLOR_MATERIAL);
 
   resized(screenWidth, screenHeight);
+
+}
+
+void loadTextures() {
+  loadGLTexture(STAR_BMP, &starTexture);
+  loadGLTexture(SMOKE_BMP, &smokeTexture);
+  loadGLTexture(TITLE_BMP, &titleTexture);
 }
 
 // Load bitmaps and convert to textures.
@@ -78,8 +95,9 @@ void loadGLTexture(char *fileName, GLuint *texture) {
   strcpy(name, SHARE_LOC);
   strcat(name, "images/");
   strcat(name, fileName);
+  printf("%s\n", name);
   surface = SDL_LoadBMP(name);
-  if ( !surface ) {
+  if (!surface) {
     fprintf(stderr, "Unable to load texture: %s\n", SDL_GetError());
     SDL_Quit();
     exit(1);
@@ -87,8 +105,8 @@ void loadGLTexture(char *fileName, GLuint *texture) {
 
   glGenTextures(1, texture);
   glBindTexture(GL_TEXTURE_2D, *texture);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+  glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
   gluBuild2DMipmaps(GL_TEXTURE_2D, 3, surface->w, surface->h, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
 }
 
@@ -99,13 +117,6 @@ void generateTexture(GLuint *texture) {
 void deleteTexture(GLuint *texture) {
   glDeleteTextures(1, texture);
 }
-
-static GLuint starTexture;
-#define STAR_BMP "star.bmp"
-static GLuint smokeTexture;
-#define SMOKE_BMP "smoke.bmp"
-static GLuint titleTexture;
-#define TITLE_BMP "title.bmp"
 
 int lowres = 0;
 int windowMode = 0;
@@ -135,18 +146,23 @@ void initSDL(SDL_Window *window) {
     joystickMode = 0;
   }
 
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+  SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+  SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+  SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
   /* Create an OpenGL screen */
-  if ( windowMode ) {
+  if (windowMode) {
     videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
   } else {
-    videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
+    // videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN;
+    videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
   }
-  window = SDL_CreateWindow(
-          CAPTION, 
+  window = SDL_CreateWindow(CAPTION, 
           SDL_WINDOWPOS_UNDEFINED, 
           SDL_WINDOWPOS_UNDEFINED,
           screenWidth, screenHeight, videoFlags);
-  if (window == NULL) {
+  if (!window) {
     fprintf(stderr, "Unable to create OpenGL screen: %s\n", SDL_GetError());
     SDL_Quit();
     exit(2);
@@ -155,13 +171,6 @@ void initSDL(SDL_Window *window) {
   if (joystickMode == 1) {
     stick = SDL_JoystickOpen(0);
   }
-
-  SDL_GLContext glcontext = SDL_GL_CreateContext(window);
-
-  initGL();
-  loadGLTexture(STAR_BMP, &starTexture);
-  loadGLTexture(SMOKE_BMP, &smokeTexture);
-  loadGLTexture(TITLE_BMP, &titleTexture);
 
   SDL_ShowCursor(SDL_DISABLE);
 }

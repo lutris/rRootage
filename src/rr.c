@@ -233,12 +233,16 @@ int interval = INTERVAL_BASE;
 int tick = 0;
 static int pPrsd = 1;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) 
+{
   int done = 0;
   long prvTickCount = 0;
   int i;
-  SDL_Event event;
+
   SDL_Window *window = NULL;
+  SDL_GLContext context = NULL;
+
+  SDL_Event event;
   long nowTick;
   int frame;
 
@@ -246,6 +250,8 @@ int main(int argc, char *argv[]) {
 
   initDegutil();
   initSDL(window);
+  SDL_ShowCursor(SDL_DISABLE);
+  initGL(window, context);
   initFirst();
   initTitle();
 
