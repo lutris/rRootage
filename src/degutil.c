@@ -42,20 +42,20 @@ int getDeg(int x, int y) {
     if ( y < 0 ) {
       ty = -y;
       if ( tx > ty ) {
-	f = 1;
-	od = DIV*3/4; tn = ty*TAN_TABLE_SIZE/tx;
+        f = 1;
+        od = DIV*3/4; tn = ty*TAN_TABLE_SIZE/tx;
       } else {
-	f = -1;
-	od = DIV; tn = tx*TAN_TABLE_SIZE/ty;
+        f = -1;
+        od = DIV; tn = tx*TAN_TABLE_SIZE/ty;
       }
     } else {
       ty = y;
       if ( tx > ty ) {
-	f = -1;
-	od = DIV*3/4; tn=ty*TAN_TABLE_SIZE/tx;
+        f = -1;
+        od = DIV*3/4; tn=ty*TAN_TABLE_SIZE/tx;
       } else {
-	f=1;
-	od = DIV/2; tn=tx*TAN_TABLE_SIZE/ty;
+        f=1;
+        od = DIV/2; tn=tx*TAN_TABLE_SIZE/ty;
       }
     }
   } else {
@@ -63,20 +63,20 @@ int getDeg(int x, int y) {
     if ( y < 0 ) {
       ty = -y;
       if ( tx > ty ) {
-	f = -1;
-	od = DIV/4; tn = ty*TAN_TABLE_SIZE/tx;
+        f = -1;
+        od = DIV/4; tn = ty*TAN_TABLE_SIZE/tx;
       } else {
-	f = 1;
-	od = 0; tn = tx*TAN_TABLE_SIZE/ty;
+        f = 1;
+        od = 0; tn = tx*TAN_TABLE_SIZE/ty;
       }
     } else {
       ty = y;
       if ( tx > ty ) {
-	f = 1;
-	od = DIV/4; tn = ty*TAN_TABLE_SIZE/tx;
+        f = 1;
+        od = DIV/4; tn = ty*TAN_TABLE_SIZE/tx;
       } else {
-	f = -1;
-	od = DIV/2; tn = tx*TAN_TABLE_SIZE/ty;
+        f = -1;
+        od = DIV/2; tn = tx*TAN_TABLE_SIZE/ty;
       }
     }
   }
