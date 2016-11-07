@@ -49,7 +49,8 @@ static void initFirst() {
     loadPreference();
     initBarragemanager();
     initAttractManager();
-    if ( !noSound ) {
+    if (!noSound) {
+        printf("Initializing sound\n");
         initSound();
     }
     initGameStateFirst();

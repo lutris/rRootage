@@ -120,7 +120,7 @@ void initSound() {
     } else {
         Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
     }
-
+    Mix_Init(0);
     useAudio = 1;
     loadSounds();
 }
