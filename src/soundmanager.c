@@ -9,13 +9,13 @@
  *
  * @version $Revision: 1.3 $
  */
-#include "SDL.h"
+#include <SDL.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
 
-#include "SDL_mixer.h"
+#include <SDL2/SDL_mixer.h>
 #include "soundmanager.h"
 
 static int useAudio = 0;
@@ -86,7 +86,8 @@ static void loadSounds() {
     strcpy(name, SHARE_LOC);
     strcat(name, "/sounds/");
     strcat(name, chunkFileName[i]);
-    if ( NULL == (chunk[i] = Mix_LoadWAV(name)) ) {
+    chunk[i] = Mix_LoadWAV(name);
+    if (NULL == chunk[i]) {
       fprintf(stderr, "Couldn't load: %s\n", name);
       useAudio = 0;
       return;
