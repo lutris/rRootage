@@ -62,14 +62,26 @@ void initGL(SDL_Window *window, SDL_GLContext context) {
         SDL_Quit();
         exit(2);
     }
-    SDL_GL_SetSwapInterval(1);
+
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    SDL_GL_SwapWindow(window);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    SDL_GL_SwapWindow(window);
+
+    //SDL_GL_SetSwapInterval(1);
+
+    const char *driverName = SDL_GetCurrentVideoDriver();
+    printf("Video driver: %s\n", driverName);
 
     glViewport(0, 0, screenWidth, screenHeight);
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glScissor(0, 0, screenWidth, screenHeight);
+
     glLineWidth(1);
     glEnable(GL_LINE_SMOOTH);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
 
     glDisable(GL_LIGHTING);
@@ -140,7 +152,7 @@ void initSDL(SDL_Window **window) {
   }
 
   /* Initialize SDL */
-  if ( SDL_Init(SDL_INIT_VIDEO) < 0 ) {
+  if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     fprintf(stderr, "Unable to initialize SDL: %s\n", SDL_GetError());
     exit(1);
   }
