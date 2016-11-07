@@ -17,9 +17,9 @@ extern "C" {
 #include "foe_mtd.h"
 }
 
-#include "bulletml/bulletmlparser.h"
-#include "bulletml/bulletmlparser-tinyxml.h"
-#include "bulletml/bulletmlrunner.h"
+#include <bulletml/bulletmlparser.h>
+#include <bulletml/bulletmlparser-tinyxml.h>
+#include <bulletml/bulletmlrunner.h>
 #include "foecommand.h"
 #include "barragemanager.h"
 #include "boss.h"
@@ -62,7 +62,7 @@ struct foe {
 
 typedef struct foe Foe;
 
-Foe* addFoeBattery(int x, int y, double rank, int d, int spd, int xReverse, 
+Foe* addFoeBattery(int x, int y, double rank, int d, int spd, int xReverse,
 		   BulletMLParser *morphParser[], int morphCnt, int morphHalf, double morphRank,
 		   double speedRank,
 		   int color, int bulletShape[], float bulletSize[],

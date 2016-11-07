@@ -12,9 +12,9 @@
 #ifndef FOECOMMAND_H_
 #define FOECOMMAND_H_
 
-#include "bulletml/bulletmlparser.h"
-#include "bulletml/bulletmlparser-tinyxml.h"
-#include "bulletml/bulletmlrunner.h"
+#include <bulletml/bulletmlparser.h>
+#include <bulletml/bulletmlparser-tinyxml.h>
+#include <bulletml/bulletmlrunner.h>
 #include "foe.h"
 
 #define COMMAND_SCREEN_SPD_RATE 512

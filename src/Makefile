@@ -10,11 +10,11 @@ CXX    = g++
 PROG   = rrootage
 
 DEFAULT_CFLAGS = `sdl-config --cflags`
-LDFLAGS        = `sdl-config --libs` -L. -lGLU -lGL bulletml/libbulletml.a -lSDL_mixer
+LDFLAGS        = `sdl-config --libs` -L. -lGLU -lGL -lbulletml -lSDL_mixer
 MORE_CFLAGS = -O2 -Wall
 
 CFLAGS   = $(DEFAULT_CFLAGS) $(MORE_CFLAGS) -DLINUX
-CPPFLAGS = $(DEFAULT_CFLAGS) $(MORE_CFLAGS) -DLINUX -I./bulletml/
+CPPFLAGS = $(DEFAULT_CFLAGS) $(MORE_CFLAGS) -DLINUX
 
 OBJS =	$(NAME).$(O) \
 	foe.$(O) foecommand.$(O) barragemanager.$(O) boss.$(O) ship.$(O) laser.$(O) \
@@ -25,7 +25,7 @@ OBJS =	$(NAME).$(O) \
 	#$(NAME)_res.$(O)
 
 $(PROG): $(OBJS)
-	$(CC) $(CFLAGS) -o $(PROG) $(OBJS) $(LDFLAGS)
+	$(CXX) $(CPPFLAGS) -o $(PROG) $(OBJS) $(LDFLAGS)
 
 #$(NAME)_res.o: $(NAME).rc
 #	windres -i $(NAME).rc -o $(NAME)_res.o

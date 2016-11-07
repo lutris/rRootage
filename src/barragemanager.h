@@ -12,9 +12,9 @@
 #ifndef BARRAGEMANAGER_H_
 #define BARRAGEMANAGER_H_
 
-#include "bulletml/bulletmlparser.h"
-#include "bulletml/bulletmlparser-tinyxml.h"
-#include "bulletml/bulletmlrunner.h"
+#include <bulletml/bulletmlparser.h>
+#include <bulletml/bulletmlparser-tinyxml.h>
+#include <bulletml/bulletmlrunner.h>
 
 typedef struct {
   BulletMLParser *bulletml;
