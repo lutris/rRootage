@@ -1,0 +1,22 @@
+
+This file specifies the differences between the Linux and Windows versions of rRootage.
+
+Installation:
+Download the data files, and the executable for your platform. Put rr in this directory.
+On most systems, simply open a console, switch to root, and run ./install.sh. If that doesn't work, you can install manually. Copy rr_share/* to /usr/share/games/rRootage, rr to /usr/bin and make sure everything works.
+
+Running:
+Type rr to start the game. The command-line line switches listed in readme_e.txt should all work.
+
+Compiling:
+Install the OpenGL development libraries. (This is the hard part.)
+Install libBulletML. (http://user.ecc.u-tokyo.ac.jp/~s31552/wp/libbulletml/index_en.html Compiling should be simple. Copy the resulting .a file to /usr/lib)
+Install SDL_mixer.
+Compile with "make -f makefile.lin"
+The file "rr" goes in your path, and all directories except src go in /usr/share/games/rRootage. src is unneeded after compiling.
+
+Uninstall:
+Remove the directory /usr/share/games/rRootage, the file /usr/bin/rr and the file ~/.rr.prf.
+
+Credits:
+The original game was created by Kenta Cho. (http://www.asahi-net.or.jp/~cs8k-cyu/windows/rr_e.html) It was ported to Linux by Evil Mr Henry. (evilmrhenry@yahoo.com)
