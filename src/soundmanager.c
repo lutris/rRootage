@@ -78,7 +78,8 @@ static void loadSounds() {
         strcpy(name, SHARE_LOC);
         strcat(name, "sounds/");
         strcat(name, musicFileName[i]);
-        if (NULL == (music[i] = Mix_LoadMUS(name))) {
+        music[i] = Mix_LoadMUS(name);
+        if (!music[i]) {
             fprintf(stderr, "Couldn't load music '%s': %s\n", name, Mix_GetError());
             useAudio = 0;
             return;
