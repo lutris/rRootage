@@ -42,6 +42,7 @@ void generateTexture(GLuint*);
 void deleteTexture(GLuint*);
 void initSDL(SDL_Window*);
 void initGL(SDL_Window*, SDL_GLContext*);
+void loadTextures();
 void closeSDL();
 void resized(int, int);
 void drawGLSceneStart();

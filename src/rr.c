@@ -240,7 +240,7 @@ int main(int argc, char *argv[])
   int i;
 
   SDL_Window *window = NULL;
-  SDL_GLContext context = NULL;
+  SDL_GLContext *context = NULL;
 
   SDL_Event event;
   long nowTick;
@@ -250,8 +250,8 @@ int main(int argc, char *argv[])
 
   initDegutil();
   initSDL(window);
-  SDL_ShowCursor(SDL_DISABLE);
   initGL(window, context);
+  loadTextures();
   initFirst();
   initTitle();
 

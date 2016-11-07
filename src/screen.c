@@ -90,24 +90,27 @@ void loadTextures() {
 // Load bitmaps and convert to textures.
 void loadGLTexture(char *fileName, GLuint *texture) {
   SDL_Surface *surface;
+  int mode = GL_RGB;
 
   char name[32];
   strcpy(name, SHARE_LOC);
   strcat(name, "images/");
   strcat(name, fileName);
-  printf("%s\n", name);
   surface = SDL_LoadBMP(name);
   if (!surface) {
     fprintf(stderr, "Unable to load texture: %s\n", SDL_GetError());
     SDL_Quit();
     exit(1);
   }
-
   glGenTextures(1, texture);
   glBindTexture(GL_TEXTURE_2D, *texture);
+
+  glTexImage2D(GL_TEXTURE_2D, 0, mode, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);
+
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-  gluBuild2DMipmaps(GL_TEXTURE_2D, 3, surface->w, surface->h, GL_RGB, GL_UNSIGNED_BYTE, surface->pixels);
+  printf("%s: %dx%d\n", name, surface->w, surface->h);
+  SDL_FreeSurface(surface);
 }
 
 void generateTexture(GLuint *texture) {
