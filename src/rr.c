@@ -241,71 +241,71 @@ static void parseArgs(int argc, char *argv[]) {
 
 int main(int argc, char *argv[]) 
 {
-  int done = 0;
-  long prvTickCount = 0;
-  int i;
+    int quit = 0;
+    long prvTickCount = 0;
+    int i;
 
-  SDL_Window *window = NULL;
-  SDL_GLContext context = NULL;
+    SDL_Window *window = NULL;
+    SDL_GLContext context = NULL;
 
-  SDL_Event event;
-  long nowTick;
-  int frame;
+    SDL_Event event;
+    long nowTick;
+    int frame;
 
-  parseArgs(argc, argv);
+    parseArgs(argc, argv);
 
-  initDegutil();
-  initSDL(&window);
-  initGL(window, context);
-  loadTextures();
-  initFirst();
-  initTitle();
+    initDegutil();
+    initSDL(&window);
+    initGL(window, context);
+    loadTextures();
+    initFirst();
+    initTitle();
 
-  while (!done) {
-    SDL_PollEvent(&event);
-    keys = SDL_GetKeyboardState(NULL);
-    if (keys[SDLK_ESCAPE] == SDL_KEYDOWN || event.type == SDL_QUIT) {
-        done = 1;
-    }
-    if (keys[SDLK_p] == SDL_KEYDOWN) {
-      if (!pPressed) {
-        if (status == IN_GAME) {
-            status = PAUSE;
-        } else if ( status == PAUSE ) {
-            status = IN_GAME;
+    while (!quit) {
+        SDL_PollEvent(&event);
+        keys = SDL_GetKeyboardState(NULL);
+        if (keys[SDLK_ESCAPE] == SDL_KEYDOWN || event.type == SDL_QUIT) {
+            quit = 1;
         }
-      }
-      pPressed = 1;
-    } else {
-      pPressed = 0;
-    }
+        if (keys[SDLK_p] == SDL_KEYDOWN) {
+            if (!pPressed) {
+                if (status == IN_GAME) {
+                    status = PAUSE;
+                } else if ( status == PAUSE ) {
+                    status = IN_GAME;
+                }
+            }
+            pPressed = 1;
+        } else {
+            pPressed = 0;
+        }
 
-    nowTick = SDL_GetTicks();
-    frame = (int)(nowTick-prvTickCount) / interval;
-    if ( frame <= 0 ) {
-      frame = 1;
-      SDL_Delay(prvTickCount+interval-nowTick);
-      if ( accframe ) {
-        prvTickCount = SDL_GetTicks();
-      } else {
-        prvTickCount += interval;
-      }
-    } else if ( frame > 5 ) {
-      frame = 5;
-      prvTickCount = nowTick;
-    } else {
-      prvTickCount += frame*interval;
-    }
-    for ( i=0 ; i<frame ; i++ ) {
-      move();
-      tick++;
-    }
+        nowTick = SDL_GetTicks();
+        frame = (int)(nowTick-prvTickCount) / interval;
+        if ( frame <= 0 ) {
+            frame = 1;
+            SDL_Delay(prvTickCount+interval-nowTick);
+            if ( accframe ) {
+                prvTickCount = SDL_GetTicks();
+            } else {
+                prvTickCount += interval;
+            }
+        } else if ( frame > 5 ) {
+            frame = 5;
+            prvTickCount = nowTick;
+        } else {
+            prvTickCount += frame*interval;
+        }
+        for ( i=0 ; i<frame ; i++ ) {
+            move();
+            tick++;
+        }
 
-    drawGLSceneStart();
-    draw();
-    drawGLSceneEnd();
-    SDL_GL_SwapWindow(window);
-  }
-  quitLast();
-  return 0;
+        drawGLSceneStart();
+        draw();
+        drawGLSceneEnd();
+        SDL_GL_SwapWindow(window);
+    }
+    quitLast();
+    return 0;
 }
