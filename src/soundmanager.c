@@ -23,14 +23,14 @@ static int useAudio = 0;
 #define MUSIC_NUM 3
 #define SHARE_LOC "./data/"
 
-static char *musicFileName[MUSIC_NUM] = {
+static const char *musicFileName[MUSIC_NUM] = {
   "stg_a.ogg", "stg_b.ogg", "stg_c.ogg",
 };
 static Mix_Music *music[MUSIC_NUM];
 
 #define CHUNK_NUM 16
 
-static char *chunkFileName[CHUNK_NUM] = {
+static const char *chunkFileName[CHUNK_NUM] = {
   "laser_start.wav", "laser.wav", "damage.wav", "bomb.wav",
   "destroied.wav", "explosion1.wav", "explosion2.wav", "miss.wav", "extend.wav",
   "grz.wav", "grzinv.wav",
