@@ -9,10 +9,18 @@
  *
  * @version $Revision: 1.4 $
  */
-#include <SDL2/SDL.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <math.h>
+#include <string.h>
 
 #include <GL/gl.h>
 #include <GL/glu.h>
+
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
 
 #define PAD_UP 1
 #define PAD_DOWN 2

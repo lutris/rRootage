@@ -9,10 +9,9 @@
  *
  * @version $Revision: 1.6 $
  */
+
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <SDL.h>
 
 #include <math.h>
 #include <string.h>
@@ -154,20 +153,21 @@ void initSDL(SDL_Window **window) {
         exit(1);
     }
 
-    const char *driverName = SDL_GetCurrentVideoDriver();
-    printf("Video driver: %s\n", driverName);
 
-    if ( SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0 ) {
-        fprintf(stderr, "Unable to initialize SDL_JOYSTICK: %s\n", SDL_GetError());
-        joystickMode = 0;
-    }
-
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-    /* Create an OpenGL screen */
+    const char *driverName = SDL_GetCurrentVideoDriver();
+    const char* glVendor = (const char*)glGetString(GL_VENDOR);
+    const char* glVersion = (const char*)glGetString(GL_VERSION);
+    printf("Video driver: %s\n", driverName);
+    printf("GL Version: %s\n", glVersion);
+    printf("GL Vendor: %s\n", glVendor);
+
+    // Create an OpenGL screen
     videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
     if (windowMode) {
         videoFlags |= SDL_WINDOW_RESIZABLE;
@@ -185,6 +185,11 @@ void initSDL(SDL_Window **window) {
         exit(2);
     }
 
+    // Joystick initialization, shouldn't be here.
+    if ( SDL_InitSubSystem(SDL_INIT_JOYSTICK) < 0 ) {
+        fprintf(stderr, "Unable to initialize SDL_JOYSTICK: %s\n", SDL_GetError());
+        joystickMode = 0;
+    }
     if (joystickMode == 1) {
         stick = SDL_JoystickOpen(0);
     }
