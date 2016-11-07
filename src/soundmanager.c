@@ -9,13 +9,13 @@
  *
  * @version $Revision: 1.3 $
  */
-#include <SDL2/SDL.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <signal.h>
 #include <string.h>
-
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+
 #include "soundmanager.h"
 
 #define MUSIC_NUM 3
@@ -72,7 +72,7 @@ void closeSound() {
  */
 static void loadSounds() {
     int i;
-    char name[56];
+    char name[128];
 
     for (i=0 ; i < MUSIC_NUM; i++) {
         strcpy(name, SHARE_LOC);
