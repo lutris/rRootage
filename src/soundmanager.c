@@ -9,7 +9,7 @@
  *
  * @version $Revision: 1.3 $
  */
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <signal.h>
@@ -18,17 +18,16 @@
 #include <SDL2/SDL_mixer.h>
 #include "soundmanager.h"
 
-static int useAudio = 0;
-
 #define MUSIC_NUM 3
 #define SHARE_LOC "./data/"
+#define CHUNK_NUM 16
+
+static int useAudio = 0;
 
 static const char *musicFileName[MUSIC_NUM] = {
   "stg_a.ogg", "stg_b.ogg", "stg_c.ogg",
 };
 static Mix_Music *music[MUSIC_NUM];
-
-#define CHUNK_NUM 16
 
 static const char *chunkFileName[CHUNK_NUM] = {
   "laser_start.wav", "laser.wav", "damage.wav", "bomb.wav",
@@ -47,106 +46,112 @@ static int chunkChannel[CHUNK_NUM] = {
 };
 
 void closeSound() {
-  int i;
-  if ( !useAudio ) return;
-  if ( Mix_PlayingMusic() ) {
-    Mix_HaltMusic();
-  }
-  for ( i=0 ; i<MUSIC_NUM ; i++ ) {
-    if ( music[i] ) {
-      Mix_FreeMusic(music[i]);
+    int i;
+    if (!useAudio) {
+        return;
     }
-  }
-  for ( i=0 ; i<CHUNK_NUM ; i++ ) {
-    if ( chunk[i] ) {
-      Mix_FreeChunk(chunk[i]);
+    if (Mix_PlayingMusic()) {
+        Mix_HaltMusic();
     }
-  }
-  Mix_CloseAudio();
+    for (i=0; i < MUSIC_NUM; i++) {
+        if (music[i]) {
+            Mix_FreeMusic(music[i]);
+        }
+    }
+    for (i=0; i < CHUNK_NUM; i++) {
+        if (chunk[i]) {
+            Mix_FreeChunk(chunk[i]);
+        }
+    }
+    Mix_CloseAudio();
 }
 
 
-// Initialize the sound.
-
+/**
+ * Initialize the sound.
+ */
 static void loadSounds() {
-  int i;
-  char name[56];
+    int i;
+    char name[56];
 
-  for ( i=0 ; i<MUSIC_NUM ; i++ ) {
-    strcpy(name, SHARE_LOC);
-    strcat(name, "sounds/");
-    strcat(name, musicFileName[i]);
-    if ( NULL == (music[i] = Mix_LoadMUS(name)) ) {
-      fprintf(stderr, "Couldn't load: %s\n", name);
-      useAudio = 0;
-      return;
+    for (i=0 ; i < MUSIC_NUM; i++) {
+        strcpy(name, SHARE_LOC);
+        strcat(name, "sounds/");
+        strcat(name, musicFileName[i]);
+        if (NULL == (music[i] = Mix_LoadMUS(name))) {
+            fprintf(stderr, "Couldn't load: %s\n", name);
+            useAudio = 0;
+            return;
+        }
     }
-  }
-  for ( i=0 ; i<CHUNK_NUM ; i++ ) {
-    strcpy(name, SHARE_LOC);
-    strcat(name, "/sounds/");
-    strcat(name, chunkFileName[i]);
-    chunk[i] = Mix_LoadWAV(name);
-    if (NULL == chunk[i]) {
-      fprintf(stderr, "Couldn't load: %s\n", name);
-      useAudio = 0;
-      return;
+    for (i=0 ; i < CHUNK_NUM; i++) {
+        strcpy(name, SHARE_LOC);
+        strcat(name, "/sounds/");
+        strcat(name, chunkFileName[i]);
+        chunk[i] = Mix_LoadWAV(name);
+        if (NULL == chunk[i]) {
+            fprintf(stderr, "Couldn't load: %s\n", name);
+            useAudio = 0;
+            return;
+        }
     }
-  }
 }
 
 void initSound() {
-  int audio_rate;
-  Uint16 audio_format;
-  int audio_channels;
-  int audio_buffers;
+    int audio_rate;
+    Uint16 audio_format;
+    int audio_channels;
+    int audio_buffers;
 
-  if ( SDL_InitSubSystem(SDL_INIT_AUDIO) < 0 ) {
-    fprintf(stderr, "Unable to initialize SDL_AUDIO: %s\n", SDL_GetError());
-    return;
-  }
+    if (SDL_InitSubSystem(SDL_INIT_AUDIO) < 0) {
+        fprintf(stderr, "Unable to initialize SDL_AUDIO: %s\n", SDL_GetError());
+        return;
+    }
 
-  audio_rate = 44100;
-  audio_format = AUDIO_S16;
-  audio_channels = 1;
-  audio_buffers = 4096;
+    audio_rate = 44100;
+    audio_format = AUDIO_S16;
+    audio_channels = 1;
+    audio_buffers = 4096;
 
-  if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) < 0) {
-    fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
-    return;
-  } else {
-    Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
-  }
+    if (Mix_OpenAudio(audio_rate, audio_format, audio_channels, audio_buffers) < 0) {
+        fprintf(stderr, "Couldn't open audio: %s\n", SDL_GetError());
+        return;
+    } else {
+        Mix_QuerySpec(&audio_rate, &audio_format, &audio_channels);
+    }
 
-  useAudio = 1;
-  loadSounds();
+    useAudio = 1;
+    loadSounds();
 }
 
-// Play/Stop the music/chunk.
-
+/**
+ * Play/Stop the music/chunk.
+ */
 void playMusic(int idx) {
-  if ( !useAudio ) return;
-  Mix_PlayMusic(music[idx], -1);
+    if (!useAudio) {
+        return;
+    }
+    Mix_PlayMusic(music[idx], -1);
 }
 
 void fadeMusic() {
-  if ( !useAudio ) return;
-  Mix_FadeOutMusic(1280);
+    if ( !useAudio ) return;
+    Mix_FadeOutMusic(1280);
 }
 
 void stopMusic() {
-  if ( !useAudio ) return;
-  if ( Mix_PlayingMusic() ) {
-    Mix_HaltMusic();
-  }
+    if ( !useAudio ) return;
+    if ( Mix_PlayingMusic() ) {
+        Mix_HaltMusic();
+    }
 }
 
 void playChunk(int idx) {
-  if ( !useAudio ) return;
-  Mix_PlayChannel(chunkChannel[idx], chunk[idx], 0);
+    if ( !useAudio ) return;
+    Mix_PlayChannel(chunkChannel[idx], chunk[idx], 0);
 }
 
 void haltChunk(int idx) {
-  if ( !useAudio ) return;
-  Mix_HaltChannel(chunkChannel[idx]);
+    if ( !useAudio ) return;
+    Mix_HaltChannel(chunkChannel[idx]);
 }
