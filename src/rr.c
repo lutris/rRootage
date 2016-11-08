@@ -188,9 +188,6 @@ int main(int argc, char *argv[])
     long prvTickCount = 0;
     int i;
 
-    SDL_Window *window = NULL;
-    SDL_GLContext context = NULL;
-
     SDL_Event event;
     long nowTick;
     int frame;
@@ -198,9 +195,7 @@ int main(int argc, char *argv[])
     parseArgs(argc, argv);
 
     initDegutil();
-    initSDL(&window);
-    initGL(window, &context);
-    SDL_GL_MakeCurrent(window, context);
+    initDisplay();
     loadTextures();
     initFirst();
     initTitle();
@@ -255,7 +250,6 @@ int main(int argc, char *argv[])
         }
 
         updateScene();
-        SDL_GL_SwapWindow(window);
     }
     quitLast();
     return EXIT_SUCCESS;

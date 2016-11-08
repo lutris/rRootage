@@ -52,6 +52,9 @@ static GLuint starTexture;
 static GLuint smokeTexture;
 static GLuint titleTexture;
 
+SDL_Window* window = NULL;
+SDL_GLContext context = NULL;
+
 static int screenWidth, screenHeight;
 
 static int screenShakeCnt = 0;
@@ -66,7 +69,6 @@ static int ikaClr[2][3][3] = {
   {{230, 230, 255}, {100, 100, 200}, {50, 50, 150}},
   {{0, 0, 0}, {200, 0, 0}, {100, 0, 0}},
 };
-
 
 float zoom = 15;
 
@@ -87,50 +89,6 @@ void resized(int width, int height) {
   screenWidth = width;
   screenHeight = height;
   screenResized();
-}
-
-// Init OpenGL.
-void initGL(SDL_Window *window, SDL_GLContext *context) {
-    *context = SDL_GL_CreateContext(window);
-    if (context == NULL) {
-        fprintf(stderr, "Couldn't create OpenGL context! %s\n", SDL_GetError());
-        SDL_Quit();
-        exit(2);
-    }
-
-    glewExperimental = GL_TRUE;
-
-    GLenum status = glewInit();
-
-    if (status != GLEW_OK) {
-        fprintf(stderr, "Glew failed to initialize\n");
-    }
-
-    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    SDL_GL_SwapWindow(window);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    SDL_GL_SwapWindow(window);
-
-    SDL_GL_SetSwapInterval(1);
-
-    glViewport(0, 0, screenWidth, screenHeight);
-    glScissor(0, 0, screenWidth, screenHeight);
-
-    glLineWidth(1);
-    glEnable(GL_LINE_SMOOTH);
-
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    glEnable(GL_TEXTURE_2D);
-    glEnable(GL_BLEND);
-
-    //glDisable(GL_LIGHTING);
-    //glDisable(GL_CULL_FACE);
-    //glDisable(GL_DEPTH_TEST);
-    //glDisable(GL_TEXTURE_2D);
-    //glDisable(GL_COLOR_MATERIAL);
-
-    resized(screenWidth, screenHeight);
 }
 
 void loadTextures() {
@@ -172,10 +130,10 @@ void deleteTexture(GLuint *texture) {
   glDeleteTextures(1, texture);
 }
 
-void initSDL(SDL_Window **window) {
+void initDisplay() {
     Uint32 videoFlags;
 
-    if ( lowres ) {
+    if (lowres) {
         screenWidth  = LOWRES_SCREEN_WIDTH;
         screenHeight = LOWRES_SCREEN_HEIGHT;
     } else {
@@ -210,7 +168,7 @@ void initSDL(SDL_Window **window) {
         printf("Fullscreen mode disabled during SDL2 port\n");
         //videoFlags |= SDL_WINDOW_FULLSCREEN;
     }
-    *window = SDL_CreateWindow(CAPTION,
+    window = SDL_CreateWindow(CAPTION, 
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
             screenWidth, screenHeight, videoFlags);
@@ -230,6 +188,47 @@ void initSDL(SDL_Window **window) {
     }
 
     SDL_ShowCursor(SDL_DISABLE);
+
+    context = SDL_GL_CreateContext(window);
+    if (context == NULL) {
+        fprintf(stderr, "Couldn't create OpenGL context! %s\n", SDL_GetError());
+        SDL_Quit();
+        exit(2);
+    }
+
+    glewExperimental = GL_TRUE;
+
+    GLenum status = glewInit();
+
+    if (status != GLEW_OK) {
+        fprintf(stderr, "Glew failed to initialize\n");
+    }
+
+    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    SDL_GL_SwapWindow(window);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    SDL_GL_SwapWindow(window);
+
+    SDL_GL_SetSwapInterval(1);
+
+    glViewport(0, 0, screenWidth, screenHeight);
+    glScissor(0, 0, screenWidth, screenHeight);
+
+    glLineWidth(1);
+    glEnable(GL_LINE_SMOOTH);
+
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+
+    //glDisable(GL_LIGHTING);
+    //glDisable(GL_CULL_FACE);
+    //glDisable(GL_DEPTH_TEST);
+    //glDisable(GL_TEXTURE_2D);
+    //glDisable(GL_COLOR_MATERIAL);
+
+    resized(screenWidth, screenHeight);
 }
 
 void closeSDL() {
@@ -325,6 +324,7 @@ void updateScene() {
         break;
     }
     glPopMatrix();
+    SDL_GL_SwapWindow(window);
 }
 
 void drawBox(GLfloat x, GLfloat y, GLfloat width, GLfloat height, int r, int g, int b) {
@@ -425,7 +425,7 @@ void drawStar(int f, GLfloat x, GLfloat y, GLfloat z, int r, int g, int b, float
   glTexCoord2f(1.0f, 1.0f);
   glVertex3f( size, -size,  0);
   glTexCoord2f(1.0f, 0.0f);
-  glVertex3f( size,  size,  0);
+  glVertex3f(size,  size,  0);
   glTexCoord2f(0.0f, 0.0f);
   glVertex3f(-size,  size,  0);
   glEnd();
