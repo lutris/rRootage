@@ -130,6 +130,33 @@ void deleteTexture(GLuint *texture) {
   glDeleteTextures(1, texture);
 }
 
+void SetOpenGLAttributes() {
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+}
+
+void switchColor(int color) {
+    switch(color) {
+    case 1:
+        glClearColor(1.0, 0.0, 0.0, 1.0);
+        break;
+    case 2:
+        glClearColor(0.0, 0.0, 1.0, 1.0);
+        break;
+    case 3:
+        glClearColor(0.0, 1.0, 0.0, 1.0);
+        break;
+    default:
+        glClearColor(0.0, 0.0, 0.0, 1.0);
+        break;
+    }
+    // Cover with blue and update
+    glClear(GL_COLOR_BUFFER_BIT);
+    SDL_GL_SwapWindow(window);
+}
 void initDisplay() {
     Uint32 videoFlags;
 
@@ -147,11 +174,7 @@ void initDisplay() {
         exit(1);
     }
 
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+    SetOpenGLAttributes();
 
     const char* driverName = SDL_GetCurrentVideoDriver();
     const char* glVendor = (const char*)glGetString(GL_VENDOR);
@@ -207,26 +230,24 @@ void initDisplay() {
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     SDL_GL_SwapWindow(window);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    SDL_GL_SwapWindow(window);
 
     SDL_GL_SetSwapInterval(1);
 
     glViewport(0, 0, screenWidth, screenHeight);
     glScissor(0, 0, screenWidth, screenHeight);
 
-    glLineWidth(1);
+    glLineWidth(10);
     glEnable(GL_LINE_SMOOTH);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
 
-    //glDisable(GL_LIGHTING);
-    //glDisable(GL_CULL_FACE);
-    //glDisable(GL_DEPTH_TEST);
-    //glDisable(GL_TEXTURE_2D);
-    //glDisable(GL_COLOR_MATERIAL);
+    glDisable(GL_LIGHTING);
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_COLOR_MATERIAL);
 
     resized(screenWidth, screenHeight);
 }

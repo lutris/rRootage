@@ -210,6 +210,17 @@ int main(int argc, char *argv[])
                     case SDLK_ESCAPE:
                         quit = 1;
                         break;
+                    case SDLK_r:
+                        switchColor(1);
+                        break;
+                    case SDLK_g:
+                        switchColor(2);
+                        break;
+                    case SDLK_b:
+                        switchColor(3);
+                        break;
+
+
                     case SDLK_p:
                         if (!pPressed) {
                             if (status == IN_GAME) {
