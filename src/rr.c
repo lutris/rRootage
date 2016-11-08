@@ -33,7 +33,6 @@
 
 static int noSound = 0;
 static int accframe = 0;
-static int pPressed = 1;
 int status;
 int interval = INTERVAL_BASE;
 int tick = 0;
@@ -195,23 +194,6 @@ int main(int argc, char *argv[])
             if (event.type == SDL_QUIT) {
                 quit = 1;
             }
-            if (event.type == SDL_KEYDOWN) {
-                switch (event.key.keysym.sym) {
-                case SDLK_p:
-                    if (!pPressed) {
-                        if (status == IN_GAME) {
-                            status = PAUSE;
-                        } else if ( status == PAUSE ) {
-                            status = IN_GAME;
-                        }
-                    }
-                    pPressed = 1;
-                    break;
-                default:
-                    pPressed = 0;
-                    break;
-                }
-            }
             if (event.type == SDL_KEYUP) {
                 switch (event.key.keysym.sym) {
                 case SDLK_ESCAPE:
@@ -219,6 +201,13 @@ int main(int argc, char *argv[])
                     break;
                 case SDLK_F11:
                     toggleFullscreen();
+                    break;
+                case SDLK_p:
+                    if (status == IN_GAME) {
+                        status = PAUSE;
+                    } else if ( status == PAUSE ) {
+                        status = IN_GAME;
+                    }
                     break;
                 }
             }
