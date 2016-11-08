@@ -17,6 +17,12 @@
 #include "attractmanager.h"
 #include "letterrender.h"
 #include "boss_mtd.h"
+#include "frag.h"
+#include "background.h"
+#include "foe_mtd.h"
+#include "laser.h"
+#include "shot.h"
+#include "ship.h"
 
 #define FAR_PLANE 720
 #define SCREEN_WIDTH 640
@@ -100,7 +106,7 @@ void initGL(SDL_Window *window, SDL_GLContext *context) {
         fprintf(stderr, "Glew failed to initialize\n");
     }
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     SDL_GL_SwapWindow(window);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -118,11 +124,11 @@ void initGL(SDL_Window *window, SDL_GLContext *context) {
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
 
-    glDisable(GL_LIGHTING);
-    glDisable(GL_CULL_FACE);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_TEXTURE_2D);
-    glDisable(GL_COLOR_MATERIAL);
+    //glDisable(GL_LIGHTING);
+    //glDisable(GL_CULL_FACE);
+    //glDisable(GL_DEPTH_TEST);
+    //glDisable(GL_TEXTURE_2D);
+    //glDisable(GL_COLOR_MATERIAL);
 
     resized(screenWidth, screenHeight);
 }
@@ -260,17 +266,68 @@ void moveScreenShake() {
   }
 }
 
-void drawGLSceneStart() {
-  glClear(GL_COLOR_BUFFER_BIT);
-  setEyepos();
+void updateScene() {
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    setEyepos();
+
+    switch (status) {
+    case TITLE:
+        drawBackground();
+        drawBoss();
+        drawBulletsWake();
+        drawBullets();
+        startDrawBoards();
+        drawSideBoards();
+        drawTitle();
+        endDrawBoards();
+        break;
+    case IN_GAME:
+    case STAGE_CLEAR:
+        drawBackground();
+        drawBoss();
+        drawLasers();
+        drawShots();
+        drawBulletsWake();
+        drawFrags();
+        drawShip();
+        drawBullets();
+        startDrawBoards();
+        drawSideBoards();
+        drawBossState();
+        endDrawBoards();
+        break;
+    case GAMEOVER:
+        drawBackground();
+        drawBoss();
+        drawBulletsWake();
+        drawFrags();
+        drawBullets();
+        startDrawBoards();
+        drawSideBoards();
+        drawGameover();
+        endDrawBoards();
+        break;
+    case PAUSE:
+        drawBackground();
+        drawBoss();
+        drawLasers();
+        drawShots();
+        drawBulletsWake();
+        drawFrags();
+        drawShip();
+        drawBullets();
+        startDrawBoards();
+        drawSideBoards();
+        drawBossState();
+        drawPause();
+        endDrawBoards();
+        break;
+    }
+    glPopMatrix();
 }
 
-void drawGLSceneEnd() {
-  glPopMatrix();
-}
-
-void drawBox(GLfloat x, GLfloat y, GLfloat width, GLfloat height,
-         int r, int g, int b) {
+void drawBox(GLfloat x, GLfloat y, GLfloat width, GLfloat height, int r, int g, int b) {
   glPushMatrix();
   glTranslatef(x, y, 0);
   glColor4ub(r, g, b, 128);
@@ -291,7 +348,8 @@ void drawBox(GLfloat x, GLfloat y, GLfloat width, GLfloat height,
 }
 
 void drawLine(GLfloat x1, GLfloat y1, GLfloat z1,
-          GLfloat x2, GLfloat y2, GLfloat z2, int r, int g, int b, int a) {
+              GLfloat x2, GLfloat y2, GLfloat z2, 
+              int r, int g, int b, int a) {
   glColor4ub(r, g, b, a);
   glBegin(GL_LINES);
   glVertex3f(x1, y1, z1);
@@ -300,7 +358,8 @@ void drawLine(GLfloat x1, GLfloat y1, GLfloat z1,
 }
 
 void drawLinePart(GLfloat x1, GLfloat y1, GLfloat z1,
-          GLfloat x2, GLfloat y2, GLfloat z2, int r, int g, int b, int a, int len) {
+                  GLfloat x2, GLfloat y2, GLfloat z2, 
+                  int r, int g, int b, int a, int len) {
   glColor4ub(r, g, b, a);
   glBegin(GL_LINES);
   glVertex3f(x1, y1, z1);
@@ -309,7 +368,8 @@ void drawLinePart(GLfloat x1, GLfloat y1, GLfloat z1,
 }
 
 void drawRollLineAbs(GLfloat x1, GLfloat y1, GLfloat z1,
-             GLfloat x2, GLfloat y2, GLfloat z2, int r, int g, int b, int a, int d1) {
+                     GLfloat x2, GLfloat y2, GLfloat z2, 
+                     int r, int g, int b, int a, int d1) {
   glPushMatrix();
   glRotatef((float)d1*360/1024, 0, 0, 1);
   glColor4ub(r, g, b, a);
@@ -321,7 +381,7 @@ void drawRollLineAbs(GLfloat x1, GLfloat y1, GLfloat z1,
 }
 
 void drawRollLine(GLfloat x, GLfloat y, GLfloat z, GLfloat width,
-          int r, int g, int b, int a, int d1, int d2) {
+                  int r, int g, int b, int a, int d1, int d2) {
   glPushMatrix();
   glTranslatef(x, y, z);
   glRotatef((float)d1*360/1024, 0, 0, 1);

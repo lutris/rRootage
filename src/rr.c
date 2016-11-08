@@ -148,62 +148,6 @@ static void move() {
   moveScreenShake();
 }
 
-static void draw() {
-    switch (status) {
-    case TITLE:
-        drawBackground();
-        drawBoss();
-        drawBulletsWake();
-        drawBullets();
-        startDrawBoards();
-        drawSideBoards();
-        drawTitle();
-        endDrawBoards();
-        break;
-    case IN_GAME:
-    case STAGE_CLEAR:
-        drawBackground();
-        drawBoss();
-        drawLasers();
-        drawShots();
-        drawBulletsWake();
-        drawFrags();
-        drawShip();
-        drawBullets();
-        startDrawBoards();
-        drawSideBoards();
-        drawBossState();
-        endDrawBoards();
-        break;
-    case GAMEOVER:
-        drawBackground();
-        drawBoss();
-        drawBulletsWake();
-        drawFrags();
-        drawBullets();
-        startDrawBoards();
-        drawSideBoards();
-        drawGameover();
-        endDrawBoards();
-        break;
-    case PAUSE:
-        drawBackground();
-        drawBoss();
-        drawLasers();
-        drawShots();
-        drawBulletsWake();
-        drawFrags();
-        drawShip();
-        drawBullets();
-        startDrawBoards();
-        drawSideBoards();
-        drawBossState();
-        drawPause();
-        endDrawBoards();
-        break;
-    }
-}
-
 static void usage(char *argv0) {
   fprintf(stderr, "Usage: %s [-lowres] [-nosound] [-window] [-reverse] [-nowait] [-accframe]\n", argv0);
 }
@@ -262,7 +206,6 @@ int main(int argc, char *argv[])
     initTitle();
 
     while (!quit) {
-        SDL_GL_SwapWindow(window);
         while(SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 quit = 1;
@@ -311,9 +254,7 @@ int main(int argc, char *argv[])
             tick++;
         }
 
-        drawGLSceneStart();
-        draw();
-        drawGLSceneEnd();
+        updateScene();
         SDL_GL_SwapWindow(window);
     }
     quitLast();

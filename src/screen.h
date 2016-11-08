@@ -55,8 +55,7 @@ void initGL(SDL_Window*, SDL_GLContext*);
 void loadTextures();
 void closeSDL();
 void resized(int, int);
-void drawGLSceneStart();
-void drawGLSceneEnd();
+void updateScene();
 
 void setScreenShake(int type, int cnt);
 void moveScreenShake();

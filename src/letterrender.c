@@ -26,14 +26,18 @@ void drawLetter(int idx, int lx, int ly, int ltSize, int d,
     size *= 0.66f; length *= 0.6f;
     switch ( d ) {
     case 0:
-      x = -x; y = y;
+      x = -x;
+      y = y;
       break;
     case 1:
-      t = x; x = -y; y = -t;
+      t = x; 
+      x = -y; 
+      y = -t;
       deg += 90;
       break;
     case 2:
-      x = x; y = -y;
+      x = x; 
+      y = -y;
       deg += 180;
       break;
     case 3:
