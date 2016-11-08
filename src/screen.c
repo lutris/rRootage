@@ -59,7 +59,6 @@ static int screenShakeCnt = 0;
 static int screenShakeType = 0;
 
 int windowMode = 0;
-int brightness = DEFAULT_BRIGHTNESS;
 int joystickMode = 1;
 int buttonReversed = 0;
 static int ikaClr[2][3][3] = {

@@ -161,15 +161,7 @@ static void parseArgs(int argc, char *argv[]) {
       windowMode = 1;
     } else if (strcmp(argv[i], "-reverse") == 0) {
       buttonReversed = 1;
-    }
-    /* else if ( (strcmp(argv[i], "-brightness") == 0) && argv[i+1] ) {
-      i++;
-      brightness = (int)atoi(argv[i]);
-      if ( brightness < 0 || brightness > 256 ) {
-	brightness = DEFAULT_BRIGHTNESS;
-      }
-      }*/
-    else if ( strcmp(argv[i], "-nowait") == 0 ) {
+    } else if ( strcmp(argv[i], "-nowait") == 0 ) {
       nowait = 1;
     } else if ( strcmp(argv[i], "-accframe") == 0 ) {
       accframe = 1;

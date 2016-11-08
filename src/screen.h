@@ -31,15 +31,12 @@
 #define PAD_BUTTON1 16
 #define PAD_BUTTON2 32
 
-#define DEFAULT_BRIGHTNESS 224
-
 extern float eyeX, eyeY, eyeZ;
 extern float pitch, roll;
 extern const Uint8 *keys;
 extern SDL_Joystick *stick;
 extern int buttonReversed;
 extern int windowMode;
-extern int brightness;
 
 int getPadState();
 int getButtonState();
