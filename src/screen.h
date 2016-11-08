@@ -47,7 +47,6 @@ void toggleFullscreen();
 void initDisplay();
 void loadTextures();
 void closeSDL();
-void resized(int, int);
 void updateScene();
 
 void setScreenShake(int type, int cnt);

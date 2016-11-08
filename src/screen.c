@@ -79,12 +79,6 @@ static void screenResized() {
   glMatrixMode(GL_MODELVIEW);
 }
 
-void resized(int width, int height) {
-  screenWidth = width;
-  screenHeight = height;
-  screenResized();
-}
-
 void loadTextures() {
     loadGLTexture("star.bmp", &starTexture);
     loadGLTexture("smoke.bmp", &smokeTexture);
@@ -148,8 +142,6 @@ void toggleFullscreen() {
 }
 
 void initDisplay() {
-    Uint32 videoFlags;
-
     screenWidth  = SCREEN_WIDTH;
     screenHeight = SCREEN_HEIGHT;
 
@@ -162,7 +154,8 @@ void initDisplay() {
     SetOpenGLAttributes();
 
     // Create an OpenGL screen
-    videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+    Uint32 videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
+
     if (windowMode) {
         videoFlags |= SDL_WINDOW_RESIZABLE;
     } else {
@@ -215,7 +208,7 @@ void initDisplay() {
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_COLOR_MATERIAL);
 
-    resized(screenWidth, screenHeight);
+    screenResized();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     SDL_GL_SwapWindow(window);
 
