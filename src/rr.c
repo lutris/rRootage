@@ -238,7 +238,7 @@ static void parseArgs(int argc, char *argv[]) {
   }
 }
 
-int main(int argc, char *argv[]) 
+int main(int argc, char *argv[])
 {
     int quit = 0;
     long prvTickCount = 0;
@@ -255,12 +255,14 @@ int main(int argc, char *argv[])
 
     initDegutil();
     initSDL(&window);
-    initGL(window, context);
+    initGL(window, &context);
+    SDL_GL_MakeCurrent(window, context);
     loadTextures();
     initFirst();
     initTitle();
 
     while (!quit) {
+        SDL_GL_SwapWindow(window);
         while(SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 quit = 1;

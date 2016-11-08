@@ -84,12 +84,20 @@ void resized(int width, int height) {
 }
 
 // Init OpenGL.
-void initGL(SDL_Window *window, SDL_GLContext context) {
-    context = SDL_GL_CreateContext(window);
+void initGL(SDL_Window *window, SDL_GLContext *context) {
+    *context = SDL_GL_CreateContext(window);
     if (context == NULL) {
         fprintf(stderr, "Couldn't create OpenGL context! %s\n", SDL_GetError());
         SDL_Quit();
         exit(2);
+    }
+
+    glewExperimental = GL_TRUE;
+
+    GLenum status = glewInit();
+
+    if (status != GLEW_OK) {
+        fprintf(stderr, "Glew failed to initialize\n");
     }
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -98,7 +106,7 @@ void initGL(SDL_Window *window, SDL_GLContext context) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     SDL_GL_SwapWindow(window);
 
-    //SDL_GL_SetSwapInterval(1);
+    SDL_GL_SetSwapInterval(1);
 
     glViewport(0, 0, screenWidth, screenHeight);
     glScissor(0, 0, screenWidth, screenHeight);
@@ -181,7 +189,7 @@ void initSDL(SDL_Window **window) {
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-    const char *driverName = SDL_GetCurrentVideoDriver();
+    const char* driverName = SDL_GetCurrentVideoDriver();
     const char* glVendor = (const char*)glGetString(GL_VENDOR);
     const char* glVersion = (const char*)glGetString(GL_VERSION);
     printf("Video driver: %s\n", driverName);
