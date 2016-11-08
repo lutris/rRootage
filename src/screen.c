@@ -130,31 +130,13 @@ void deleteTexture(GLuint *texture) {
 
 void SetOpenGLAttributes() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    // Works with OpenGL 3.1, not with 3.2
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 }
 
-void switchColor(int color) {
-    switch(color) {
-    case 1:
-        glClearColor(1.0, 0.0, 0.0, 1.0);
-        break;
-    case 2:
-        glClearColor(0.0, 0.0, 1.0, 1.0);
-        break;
-    case 3:
-        glClearColor(0.0, 1.0, 0.0, 1.0);
-        break;
-    default:
-        glClearColor(0.0, 0.0, 0.0, 1.0);
-        break;
-    }
-    // Cover with blue and update
-    glClear(GL_COLOR_BUFFER_BIT);
-    SDL_GL_SwapWindow(window);
-}
 void initDisplay() {
     Uint32 videoFlags;
 
@@ -174,20 +156,13 @@ void initDisplay() {
 
     SetOpenGLAttributes();
 
-    const char* driverName = SDL_GetCurrentVideoDriver();
-    const char* glVendor = (const char*)glGetString(GL_VENDOR);
-    const char* glVersion = (const char*)glGetString(GL_VERSION);
-    printf("Video driver: %s\n", driverName);
-    printf("GL Version: %s\n", glVersion);
-    printf("GL Vendor: %s\n", glVendor);
-
     // Create an OpenGL screen
     videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
     if (windowMode) {
         videoFlags |= SDL_WINDOW_RESIZABLE;
     } else {
         printf("Fullscreen mode disabled during SDL2 port\n");
-        //videoFlags |= SDL_WINDOW_FULLSCREEN;
+        videoFlags |= SDL_WINDOW_FULLSCREEN; // _DESKTOP;
     }
     window = SDL_CreateWindow(CAPTION,
             SDL_WINDOWPOS_CENTERED,
@@ -217,29 +192,17 @@ void initDisplay() {
         exit(2);
     }
 
-    glewExperimental = GL_TRUE;
-
-    GLenum glewStatus = glewInit();
-
-    if (glewStatus != GLEW_OK) {
-        fprintf(stderr, "Glew failed to initialize\n");
-    }
-
-    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    SDL_GL_SwapWindow(window);
-
-    SDL_GL_SetSwapInterval(1);
-
     glViewport(0, 0, screenWidth, screenHeight);
     glScissor(0, 0, screenWidth, screenHeight);
+    glLineWidth(1);
 
-    glLineWidth(10);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
     glEnable(GL_LINE_SMOOTH);
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE);
-    glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
+    glEnable(GL_TEXTURE_2D);
 
     glDisable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
@@ -248,6 +211,10 @@ void initDisplay() {
     glDisable(GL_COLOR_MATERIAL);
 
     resized(screenWidth, screenHeight);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    SDL_GL_SwapWindow(window);
+
+    SDL_GL_SetSwapInterval(1);
 }
 
 void closeSDL() {
@@ -277,11 +244,12 @@ static void setEyepos() {
 }
 
 void setScreenShake(int type, int cnt) {
-  screenShakeType = type; screenShakeCnt = cnt;
+  screenShakeType = type; 
+  screenShakeCnt = cnt;
 }
 
 void moveScreenShake() {
-  if ( screenShakeCnt > 0 ) {
+  if (screenShakeCnt > 0) {
     screenShakeCnt--;
   }
 }
@@ -1044,13 +1012,13 @@ int getPadState() {
   if (keys[SDLK_RIGHT] == SDL_KEYDOWN || keys[SDLK_KP_6] == SDL_KEYDOWN || x > JOYSTICK_AXIS ) {
     pad |= PAD_RIGHT;
   }
-  if ( keys[SDLK_LEFT] == SDL_KEYDOWN || keys[SDLK_KP_4] == SDL_KEYDOWN || x < -JOYSTICK_AXIS ) {
+  if (keys[SDLK_LEFT] == SDL_KEYDOWN || keys[SDLK_KP_4] == SDL_KEYDOWN || x < -JOYSTICK_AXIS ) {
     pad |= PAD_LEFT;
   }
-  if ( keys[SDLK_DOWN] == SDL_KEYDOWN || keys[SDLK_KP_2] == SDL_KEYDOWN || y > JOYSTICK_AXIS ) {
+  if (keys[SDLK_DOWN] == SDL_KEYDOWN || keys[SDLK_KP_2] == SDL_KEYDOWN || y > JOYSTICK_AXIS ) {
     pad |= PAD_DOWN;
   }
-  if ( keys[SDLK_UP] == SDL_KEYDOWN ||  keys[SDLK_KP_8] == SDL_KEYDOWN || y < -JOYSTICK_AXIS ) {
+  if (keys[SDLK_UP] == SDL_KEYDOWN ||  keys[SDLK_KP_8] == SDL_KEYDOWN || y < -JOYSTICK_AXIS ) {
     pad |= PAD_UP;
   }
   return pad;
