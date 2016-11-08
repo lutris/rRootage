@@ -149,19 +149,17 @@ static void move() {
 }
 
 static void usage(char *argv0) {
-  fprintf(stderr, "Usage: %s [-lowres] [-nosound] [-window] [-reverse] [-nowait] [-accframe]\n", argv0);
+  fprintf(stderr, "Usage: %s [-nosound] [-window] [-reverse] [-nowait] [-accframe]\n", argv0);
 }
 
 static void parseArgs(int argc, char *argv[]) {
   int i;
   for ( i=1 ; i<argc ; i++ ) {
-    if ( strcmp(argv[i], "-lowres") == 0 ) {
-      lowres = 1;
-    } else if ( strcmp(argv[i], "-nosound") == 0 ) {
+    if (strcmp(argv[i], "-nosound") == 0) {
       noSound = 1;
-    } else if ( strcmp(argv[i], "-window") == 0 ) {
+    } else if (strcmp(argv[i], "-window") == 0) {
       windowMode = 1;
-    } else if ( strcmp(argv[i], "-reverse") == 0 ) {
+    } else if (strcmp(argv[i], "-reverse") == 0) {
       buttonReversed = 1;
     }
     /* else if ( (strcmp(argv[i], "-brightness") == 0) && argv[i+1] ) {

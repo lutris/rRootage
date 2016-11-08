@@ -38,7 +38,6 @@ extern float pitch, roll;
 extern const Uint8 *keys;
 extern SDL_Joystick *stick;
 extern int buttonReversed;
-extern int lowres;
 extern int windowMode;
 extern int brightness;
 

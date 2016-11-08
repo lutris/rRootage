@@ -27,8 +27,6 @@
 #define FAR_PLANE 720
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
-#define LOWRES_SCREEN_WIDTH 320
-#define LOWRES_SCREEN_HEIGHT 240
 #define SHARE_LOC "./data/"
 #define LASER_ALPHA 100
 #define LASER_LINE_ALPHA 50
@@ -60,7 +58,6 @@ static int screenWidth, screenHeight;
 static int screenShakeCnt = 0;
 static int screenShakeType = 0;
 
-int lowres = 0;
 int windowMode = 0;
 int brightness = DEFAULT_BRIGHTNESS;
 int joystickMode = 1;
@@ -140,13 +137,8 @@ void SetOpenGLAttributes() {
 void initDisplay() {
     Uint32 videoFlags;
 
-    if (lowres) {
-        screenWidth  = LOWRES_SCREEN_WIDTH;
-        screenHeight = LOWRES_SCREEN_HEIGHT;
-    } else {
-        screenWidth  = SCREEN_WIDTH;
-        screenHeight = SCREEN_HEIGHT;
-    }
+    screenWidth  = SCREEN_WIDTH;
+    screenHeight = SCREEN_HEIGHT;
 
     /* Initialize SDL */
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -244,7 +236,7 @@ static void setEyepos() {
 }
 
 void setScreenShake(int type, int cnt) {
-  screenShakeType = type; 
+  screenShakeType = type;
   screenShakeCnt = cnt;
 }
 
