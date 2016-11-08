@@ -142,9 +142,6 @@ void toggleFullscreen() {
 }
 
 void initDisplay() {
-    screenWidth  = SCREEN_WIDTH;
-    screenHeight = SCREEN_HEIGHT;
-
     /* Initialize SDL */
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         fprintf(stderr, "Unable to initialize SDL: %s\n", SDL_GetError());
@@ -156,11 +153,20 @@ void initDisplay() {
     // Create an OpenGL screen
     Uint32 videoFlags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
+    SDL_DisplayMode current;
+    int success = SDL_GetCurrentDisplayMode(0, &current);
+    if (success != 0) {
+        SDL_Log("Could not get display mode for video display: %s", SDL_GetError());
+    }
     if (windowMode) {
         videoFlags |= SDL_WINDOW_RESIZABLE;
+        screenWidth  = SCREEN_WIDTH;
+        screenHeight = SCREEN_HEIGHT;
     } else {
         printf("Fullscreen mode disabled during SDL2 port\n");
-        videoFlags |= SDL_WINDOW_FULLSCREEN; // _DESKTOP;
+        videoFlags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+        screenWidth = current.w;
+        screenHeight = current.h;
     }
     window = SDL_CreateWindow(CAPTION,
             SDL_WINDOWPOS_CENTERED,
