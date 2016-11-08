@@ -70,13 +70,17 @@ const Uint8 *keys;
 
 SDL_Joystick *stick = NULL;
 
-// Reset viewport when the screen is resized.
+/*
+ * Reset viewport when the screen is resized.
+ * FIXME: Rename this function, this is clearly not related to screen being
+ * resized.
+ */
 static void screenResized() {
-  glViewport(0, 0, screenWidth, screenHeight);
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-  gluPerspective(45.0f, (GLfloat)screenWidth/(GLfloat)screenHeight, 0.1f, FAR_PLANE);
-  glMatrixMode(GL_MODELVIEW);
+    glViewport(0, 0, screenWidth, screenHeight);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0f, (GLfloat)screenWidth / (GLfloat)screenHeight, 0.1f, FAR_PLANE);
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void loadTextures() {
