@@ -197,23 +197,29 @@ int main(int argc, char *argv[])
             }
             if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
-                    case SDLK_ESCAPE:
-                        quit = 1;
-                        break;
-
-                    case SDLK_p:
-                        if (!pPressed) {
-                            if (status == IN_GAME) {
-                                status = PAUSE;
-                            } else if ( status == PAUSE ) {
-                                status = IN_GAME;
-                            }
+                case SDLK_p:
+                    if (!pPressed) {
+                        if (status == IN_GAME) {
+                            status = PAUSE;
+                        } else if ( status == PAUSE ) {
+                            status = IN_GAME;
                         }
-                        pPressed = 1;
-                        break;
-                    default:
-                        pPressed = 0;
-                        break;
+                    }
+                    pPressed = 1;
+                    break;
+                default:
+                    pPressed = 0;
+                    break;
+                }
+            }
+            if (event.type == SDL_KEYUP) {
+                switch (event.key.keysym.sym) {
+                case SDLK_ESCAPE:
+                    quit = 1;
+                    break;
+                case SDLK_F11:
+                    toggleFullscreen();
+                    break;
                 }
             }
         }

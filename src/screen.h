@@ -45,6 +45,7 @@ void loadModel(char *fileName, GLuint *model);
 void loadGLTexture(const char*, GLuint*);
 void generateTexture(GLuint*);
 void deleteTexture(GLuint*);
+void toggleFullscreen();
 void initDisplay();
 void loadTextures();
 void closeSDL();

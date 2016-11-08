@@ -133,6 +133,20 @@ void SetOpenGLAttributes() {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 }
 
+void toggleFullscreen() {
+    Uint32 flags;
+    if (windowMode) {
+        windowMode = 0;
+        printf("Switching to fullscreen\n");
+        flags = SDL_WINDOW_FULLSCREEN_DESKTOP;
+    } else {
+        windowMode = 1;
+        flags = 0;
+        printf("Switching to windowed mode\n");
+    }
+    SDL_SetWindowFullscreen(window, flags);
+}
+
 void initDisplay() {
     Uint32 videoFlags;
 
