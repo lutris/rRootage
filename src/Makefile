@@ -6,7 +6,7 @@ CXX    = g++
 PROG   = rrootage
 
 DEFAULT_CFLAGS = `sdl2-config --cflags`
-LDFLAGS        = `sdl2-config --libs` -L. -lGLEW -lGLU -lGL -lbulletml -lSDL2_mixer
+LDFLAGS        = `sdl2-config --libs` -L. -lGLU -lGL -lbulletml -lSDL2_mixer
 MORE_CFLAGS = -O2 -Wall
 
 CPPFLAGS = $(DEFAULT_CFLAGS) $(MORE_CFLAGS) -DLINUX
