@@ -70,8 +70,6 @@ static int ikaClr[2][3][3] = {
   {{0, 0, 0}, {200, 0, 0}, {100, 0, 0}},
 };
 
-float zoom = 15;
-
 const Uint8 *keys;
 
 SDL_Joystick *stick = NULL;
@@ -191,7 +189,7 @@ void initDisplay() {
         printf("Fullscreen mode disabled during SDL2 port\n");
         //videoFlags |= SDL_WINDOW_FULLSCREEN;
     }
-    window = SDL_CreateWindow(CAPTION, 
+    window = SDL_CreateWindow(CAPTION,
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
             screenWidth, screenHeight, videoFlags);
@@ -221,9 +219,9 @@ void initDisplay() {
 
     glewExperimental = GL_TRUE;
 
-    GLenum status = glewInit();
+    GLenum glewStatus = glewInit();
 
-    if (status != GLEW_OK) {
+    if (glewStatus != GLEW_OK) {
         fprintf(stderr, "Glew failed to initialize\n");
     }
 
@@ -258,6 +256,8 @@ void closeSDL() {
 
 static void setEyepos() {
     float x, y;
+    float zoom = 15;
+
     glPushMatrix();
     if (screenShakeCnt > 0) {
         switch (screenShakeType) {
@@ -369,7 +369,7 @@ void drawBox(GLfloat x, GLfloat y, GLfloat width, GLfloat height, int r, int g, 
 }
 
 void drawLine(GLfloat x1, GLfloat y1, GLfloat z1,
-              GLfloat x2, GLfloat y2, GLfloat z2, 
+              GLfloat x2, GLfloat y2, GLfloat z2,
               int r, int g, int b, int a) {
   glColor4ub(r, g, b, a);
   glBegin(GL_LINES);
@@ -379,7 +379,7 @@ void drawLine(GLfloat x1, GLfloat y1, GLfloat z1,
 }
 
 void drawLinePart(GLfloat x1, GLfloat y1, GLfloat z1,
-                  GLfloat x2, GLfloat y2, GLfloat z2, 
+                  GLfloat x2, GLfloat y2, GLfloat z2,
                   int r, int g, int b, int a, int len) {
   glColor4ub(r, g, b, a);
   glBegin(GL_LINES);
@@ -389,7 +389,7 @@ void drawLinePart(GLfloat x1, GLfloat y1, GLfloat z1,
 }
 
 void drawRollLineAbs(GLfloat x1, GLfloat y1, GLfloat z1,
-                     GLfloat x2, GLfloat y2, GLfloat z2, 
+                     GLfloat x2, GLfloat y2, GLfloat z2,
                      int r, int g, int b, int a, int d1) {
   glPushMatrix();
   glRotatef((float)d1*360/1024, 0, 0, 1);

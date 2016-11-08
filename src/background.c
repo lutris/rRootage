@@ -169,7 +169,7 @@ void drawBackground() {
   int lx, ly, i;
   float x, y;
   Plane *pl;
-  for ( i=0 ; i<planeNum ; i++ ) {
+  for (i=0 ; i<planeNum ; i++) {
     pl = &(plane[i]);
     x = pl->x+pl->ox;
     for ( lx=0 ; lx<pl->xn ; lx++, x+=pl->width ) {
