@@ -43,16 +43,16 @@ void drawLetter(int idx, int lx, int ly, int ltSize, int d,
     }
     deg %= 180;
     if ( deg <= 45 || deg > 135 ) {
-      drawBox((int)(x*ltSize)+lx, (int)(y*ltSize)+ly, 
+      drawBox((int)(x*ltSize)+lx, (int)(y*ltSize)+ly,
 	      (int)(size*ltSize), (int)(length*ltSize), r, g, b);
     } else {
-      drawBox((int)(x*ltSize)+lx, (int)(y*ltSize)+ly, 
+      drawBox((int)(x*ltSize)+lx, (int)(y*ltSize)+ly,
 	      (int)(length*ltSize), (int)(size*ltSize), r, g, b);
     }
   }
 }
-		       
-void drawString(char *str, int lx, int ly, int ltSize, int d,
+
+void drawString(const char *str, int lx, int ly, int ltSize, int d,
 		int r, int g, int b) {
   int x = lx, y = ly;
   int i, c, idx;

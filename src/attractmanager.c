@@ -363,9 +363,9 @@ void drawTitle() {
   int i;
   int r, g, b;
   int sx, sy;
-  char *stgChr = "STAGE";
-  char *quitChr = "QUIT";
-  char *mdChr[] = {"NORMAL MODE", "PSY MODE", "IKA MODE", "GW MODE"};
+  const char *stgChr = "STAGE";
+  const char *quitChr = "QUIT";
+  const char *mdChr[] = {"NORMAL MODE", "PSY MODE", "IKA MODE", "GW MODE"};
   int mdChrX[] = {270, 330, 330, 350};
   char mdIni[] = {'N', 'P', 'I', 'G'};
   drawTitleBoard();
